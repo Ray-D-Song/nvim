@@ -20,3 +20,10 @@ vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeOpen<CR>', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader>t', ':edit term://zsh<CR>', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<leader><leader>j', ':HopWord<CR>', { noremap = true, silent = true })
+
+
+vim.api.nvim_set_keymap('n', '<leader>wh', '<C-w>h', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<leader>wl', '<C-w>l', { noremap = true, silent = true })

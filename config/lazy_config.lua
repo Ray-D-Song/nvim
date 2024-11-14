@@ -43,58 +43,73 @@ require("lazy").setup({
         require("nvim-tree").setup {}
       end,
     },
+    --[[
     {
-      "dundalek/lazy-lsp.nvim",
-      dependencies = { "neovim/nvim-lspconfig" },
-      config = function()
-        require("lazy-lsp").setup {}
-      end
-    },
-    {
-      "dundalek/lazy-lsp.nvim",
-      dependencies = {
-        "neovim/nvim-lspconfig",
-        {"VonHeikemen/lsp-zero.nvim", branch = "v3.x"},
-        "hrsh7th/cmp-nvim-lsp",
+        "dundalek/lazy-lsp.nvim",
+        dependencies = {
+          "neovim/nvim-lspconfig",
+          {"VonHeikemen/lsp-zero.nvim", branch = "v3.x"},
+          "hrsh7th/cmp-nvim-lsp",
+          "hrsh7th/nvim-cmp",
+        },
+        config = function()
+          local lsp_zero = require("lsp-zero")
+      
+          lsp_zero.on_attach(function(client, bufnr)
+            -- see :help lsp-zero-keybindings to learn the available actions
+            lsp_zero.default_keymaps({
+              buffer = bufnr,
+              preserve_mappings = false
+            })
+          end)
+      
+          require("lazy-lsp").setup {
+            configs = {
+              lua_ls = {
+                 settings = {
+                   Lua = {
+                     diagnostics = {
+                       -- Get the language server to recognize the `vim` global
+                       globals = { "vim" },
+                     },
+                   },
+                 },
+               },
+            },
+          }
+        end,
+      },
+      {
         "hrsh7th/nvim-cmp",
-      },
-      config = function()
-        local lsp_zero = require("lsp-zero")
-    
-        lsp_zero.on_attach(function(client, bufnr)
-          -- see :help lsp-zero-keybindings to learn the available actions
-          lsp_zero.default_keymaps({
-            buffer = bufnr,
-            preserve_mappings = false
+        -- load cmp on InsertEnter
+        event = "InsertEnter",
+        -- these dependencies will only be loaded when cmp loads
+        -- dependencies are always lazy-loaded unless specified otherwise
+        dependencies = {
+          "hrsh7th/cmp-nvim-lsp",
+          "hrsh7th/cmp-buffer",
+        },
+        config = function()
+          local cmp = require('cmp')
+          cmp.setup({
+            preselect = 'item',
+            completion = {
+              completeopt = 'menu,menuone,noinsert'
+            },
+            mapping = cmp.mapping.preset.insert({
+              ['<CR>'] = cmp.mapping.confirm({select = false}),
+            }),
           })
-        end)
-    
-        require("lazy-lsp").setup {}
-      end,
-    },
-    {
-      "hrsh7th/nvim-cmp",
-      -- load cmp on InsertEnter
-      event = "InsertEnter",
-      -- these dependencies will only be loaded when cmp loads
-      -- dependencies are always lazy-loaded unless specified otherwise
-      dependencies = {
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
+        end,
       },
-      config = function()
-        local cmp = require('cmp')
-        cmp.setup({
-          preselect = 'item',
-          completion = {
-            completeopt = 'menu,menuone,noinsert'
-          },
-          mapping = cmp.mapping.preset.insert({
-            ['<CR>'] = cmp.mapping.confirm({select = false}),
-          }),
-        })
-      end,
-    },
+      --]]
+    {
+      'smoka7/hop.nvim',
+      version = "*",
+      opts = {
+          keys = 'etovxqpdygfblzhckisuran'
+      }
+    }
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
