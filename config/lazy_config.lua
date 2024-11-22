@@ -1,3 +1,5 @@
+local plugin_codeium = require('lazy.codeium')
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -24,12 +26,26 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    -- import your plugins
+    plugin_codeium,
+    {
+      "sbdchd/neoformat",
+    },
     {
 	    "folke/tokyonight.nvim",
   	  lazy = false,
   	  priority = 1000,
   	  opts = {},
+    },
+    {
+      'romgrk/barbar.nvim',
+      dependencies = {
+        'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+        'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+      },
+      init = function() vim.g.barbar_auto_setup = false end,
+      opts = {
+      },
+      version = '^1.0.0', -- optional: only update when a new 1.x version is released
     },
     { "nvim-tree/nvim-web-devicons", lazy = true },
     {
@@ -43,7 +59,6 @@ require("lazy").setup({
         require("nvim-tree").setup {}
       end,
     },
-    --[[
     {
         "dundalek/lazy-lsp.nvim",
         dependencies = {
@@ -102,7 +117,6 @@ require("lazy").setup({
           })
         end,
       },
-      --]]
     {
       'smoka7/hop.nvim',
       version = "*",
