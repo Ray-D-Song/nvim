@@ -1,27 +1,77 @@
-package.path = package.path .. ";/Users/ray/.config/nvim/config/?.lua;/Users/ray-d-song/.config/nvim/config/?.lua"
+package.path = package.path .. ";/Users/ray/.config/nvim/?.lua;/Users/ray-d-song/.config/nvim/?.lua"
 
-require("lazy_config")
+require('lazy_config')
 
-vim.cmd[[colorscheme tokyonight-night]]
+-- 输入模式键位配置
+vim.keymap.set('i', 'jj', '<Esc>')  -- 使用 jj 快速退出输入模式
+
+-- 命令模式键位配置
+if vim.g.vscode then
+  -- VSCode 特定配置
+  vim.keymap.set('n', 'sa', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR>')          -- 保存文件
+  vim.keymap.set('n', 'wq', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR><Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- 保存并关闭文件
+  vim.keymap.set('n', 'qf', '<Cmd>call VSCodeCall("editor.action.quickFix")<CR>')              -- 显示快速修复建议
+  vim.keymap.set('n', 'gd', '<Cmd>call VSCodeCall("editor.action.revealDefinition")<CR>')      -- 跳转到定义
+  vim.keymap.set('n', 'gr', '<Cmd>call VSCodeCall("editor.action.goToReferences")<CR>')        -- 查看引用
+  vim.keymap.set('n', 'gs', '<Cmd>call VSCodeCall("workbench.action.findInFiles")<CR>')        -- 全局搜索
+  vim.keymap.set('n', 'cs', '<Cmd>call VSCodeCall("actions.find")<CR>')                        -- 当前文件内搜索
+  vim.keymap.set('n', 'x', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')   -- 关闭当前文件件
+
+  -- 分屏操作键位
+  vim.keymap.set('n', '<space>sx', '<Cmd>call VSCodeCall("workbench.action.splitEditorDown")<CR>')    -- 水平分屏
+  vim.keymap.set('n', '<space>sy', '<Cmd>call VSCodeCall("workbench.action.splitEditorRight")<CR>')   -- 垂直分屏
+  vim.keymap.set('n', '<space>sc', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- 关闭当前分屏
+
+  -- 窗口切换键位
+  vim.keymap.set('n', '<space>sh', '<Cmd>call VSCodeCall("workbench.action.focusLeftGroup")<CR>')     -- 切换到左边窗口
+  vim.keymap.set('n', '<space>sl', '<Cmd>call VSCodeCall("workbench.action.focusRightGroup")<CR>')    -- 切换到右边窗口
+  vim.keymap.set('n', '<space>sk', '<Cmd>call VSCodeCall("workbench.action.focusAboveGroup")<CR>')    -- 切换到上边窗口
+  vim.keymap.set('n', '<space>sj', '<Cmd>call VSCodeCall("workbench.action.focusBelowGroup")<CR>')    -- 切换到下边窗口
+else
+  -- NeoVim 原生配置
+  vim.keymap.set('n', 'sa', ':w<CR>')        -- 保存文件
+  vim.keymap.set('n', 'wq', ':wq<CR>')       -- 保存并关闭文件
+  vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>')      -- 显示 LSP 快速修复建议
+  vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')       -- 跳转到定义
+  vim.keymap.set('n', 'gr', ':lua vim.lsp.buf.references()<CR>')       -- 查看引用
+  vim.keymap.set('n', 'gs', ':lua require("telescope.builtin").live_grep()<CR>')              -- 使用 telescope 进行全局搜索
+  vim.keymap.set('n', 'cs', ':lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>') -- 使用 telescope 在当前文件中搜索
+  vim.keymap.set('n', 'x', ':q<CR>')         -- 关闭当前文件
+
+  -- 分屏操作键位
+  vim.keymap.set('n', '<space>sx', ':split<CR>')   -- 水平分屏
+  vim.keymap.set('n', '<space>sy', ':vsplit<CR>')  -- 垂直分屏
+  vim.keymap.set('n', '<space>sc', ':close<CR>')   -- 关闭当前分屏
+  
+  -- 窗口切换键位
+  vim.keymap.set('n', '<space>sh', '<C-w>h')  -- 切换到左边窗口
+  vim.keymap.set('n', '<space>sl', '<C-w>l')  -- 切换到右边窗口
+  vim.keymap.set('n', '<space>sk', '<C-w>k')  -- 切换到上边窗口
+  vim.keymap.set('n', '<space>sj', '<C-w>j')  -- 切换到下边窗口
+end
+
+-- 移动相关键位配置
+vim.keymap.set('n', '<space>k', '10k')  -- 向上移动 10 行
+vim.keymap.set('n', '<space>j', '10j')  -- 向下移动 10 行
+vim.keymap.set('n', '<space>h', '10h')  -- 向左移动 10 个字符
+vim.keymap.set('n', '<space>l', '10l')  -- 向右移动 10 个字符
+
+-- 快速移动键位（使用 Hop）
+vim.keymap.set('n', '<space><space>k', ':HopLineStartAC<CR>')  -- 向上移动
+vim.keymap.set('n', '<space><space>j', ':HopLineStartBC<CR>')  -- 向下移动
+vim.keymap.set('n', '<space><space>h', ':HopWordBC<CR>')  -- 向左移动 20 个字符
+vim.keymap.set('n', '<space><space>l', ':HopWordAC<CR>')  -- 向右移动 20 个字符
 
 vim.opt.termguicolors = true
 
 vim.opt.tabstop = 2
 vim.opt.expandtab = true
-vim.opt.shiftwidth=2
+vim.opt.shiftwidth = 2
 
 vim.opt.nu = true
 
 vim.o.clipboard = "unnamedplus"
 vim.o.scrolloff = 10
-vim.g.mapleader = ' '
-
-vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'wq', ':wq<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'sa', ':w<CR>', { noremap = true, silent = true })
-
--- file tree
-vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeOpen<CR>', { noremap = true, silent = true })
 
 -- terminal config
 function OpenTerminal()
@@ -30,13 +80,3 @@ function OpenTerminal()
   vim.cmd('terminal')
 end
 vim.api.nvim_create_user_command('Term', OpenTerminal, {})
-vim.api.nvim_set_keymap('n', '<leader>t', ':Term<CR>', { noremap = true, silent = true })
-
--- ace jump
-vim.api.nvim_set_keymap('n', '<leader><leader>j', ':HopWord<CR>', { noremap = true, silent = true })
-
--- reload config
-vim.api.nvim_set_keymap('n', '<leader><leader>r', ':luafile $MYVIMRC<CR>', { noremap = true, silent = true })
-
-vim.api.nvim_set_keymap('n', '<leader>wh', '<C-w>h', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>wl', '<C-w>l', { noremap = true, silent = true })
