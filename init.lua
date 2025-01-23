@@ -2,13 +2,10 @@ package.path = package.path .. ";/Users/ray/.config/nvim/?.lua;/Users/ray-d-song
 
 require('lazy_config')
 
--- 输入模式键位配置
-vim.keymap.set('i', 'jj', '<Esc>')  -- 使用 jj 快速退出输入模式
-
 -- 命令模式键位配置
 if vim.g.vscode then
   -- VSCode 特定配置
-  vim.keymap.set('n', 'sa', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR>')          -- 保存文件
+  vim.keymap.set('n', 'sa', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR><Cmd>call VSCodeCall("editor.action.formatDocument")<CR>')          -- 保存文件并格式化
   vim.keymap.set('n', 'wq', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR><Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- 保存并关闭文件
   vim.keymap.set('n', 'qf', '<Cmd>call VSCodeCall("editor.action.quickFix")<CR>')              -- 显示快速修复建议
   vim.keymap.set('n', 'gd', '<Cmd>call VSCodeCall("editor.action.revealDefinition")<CR>')      -- 跳转到定义
@@ -57,10 +54,10 @@ vim.keymap.set('n', '<space>h', '10h')  -- 向左移动 10 个字符
 vim.keymap.set('n', '<space>l', '10l')  -- 向右移动 10 个字符
 
 -- 快速移动键位（使用 Hop）
-vim.keymap.set('n', '<space><space>k', ':HopLineStartAC<CR>')  -- 向上移动
-vim.keymap.set('n', '<space><space>j', ':HopLineStartBC<CR>')  -- 向下移动
-vim.keymap.set('n', '<space><space>h', ':HopWordBC<CR>')  -- 向左移动 20 个字符
-vim.keymap.set('n', '<space><space>l', ':HopWordAC<CR>')  -- 向右移动 20 个字符
+vim.keymap.set('n', '<space><space>k', ':HopLineStartBC<CR>')  -- 向上移动
+vim.keymap.set('n', '<space><space>j', ':HopLineStartAC<CR>')  -- 向下移动
+vim.keymap.set('n', '<space><space>h', ':HopWordBC<CR>')  -- 向左移动
+vim.keymap.set('n', '<space><space>l', ':HopWordAC<CR>')  -- 向右移动
 
 vim.opt.termguicolors = true
 
