@@ -1,11 +1,11 @@
-package.path = package.path .. ";/Users/ray/.config/nvim/?.lua;/Users/ray-d-song/.config/nvim/?.lua"
+package.path = package.path .. ";/Users/ray/.config/nvim/?.lua;/Users/ray-d-song/.config/nvim/?.lua;/home/ray/.config/nvim/?.lua"
 
 require('lazy_config')
 
 -- 命令模式键位配置
 if vim.g.vscode then
   -- VSCode 特定配置
-  vim.keymap.set('n', 'sa', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR><Cmd>call VSCodeCall("editor.action.formatDocument")<CR>')          -- 保存文件并格式化
+  vim.keymap.set('n', 'sa', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR>')          -- 保存文件并格式化
   vim.keymap.set('n', 'wq', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR><Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- 保存并关闭文件
   vim.keymap.set('n', 'qf', '<Cmd>call VSCodeCall("editor.action.quickFix")<CR>')              -- 显示快速修复建议
   vim.keymap.set('n', 'gd', '<Cmd>call VSCodeCall("editor.action.revealDefinition")<CR>')      -- 跳转到定义
