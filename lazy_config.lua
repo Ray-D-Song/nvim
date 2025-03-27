@@ -67,71 +67,67 @@ require("lazy").setup({
         require("nvim-tree").setup {}
       end,
     },
-    -- {
-    --     "dundalek/lazy-lsp.nvim",
-    --     dependencies = {
-    --       "neovim/nvim-lspconfig",
-    --       {"VonHeikemen/lsp-zero.nvim", branch = "v3.x"},
-    --       "hrsh7th/cmp-nvim-lsp",
-    --       "hrsh7th/nvim-cmp",
-    --     },
-    --     config = function()
-    --       local lsp_zero = require("lsp-zero")
-      
-    --       lsp_zero.on_attach(function(client, bufnr)
-    --         -- see :help lsp-zero-keybindings to learn the available actions
-    --         lsp_zero.default_keymaps({
-    --           buffer = bufnr,
-    --           preserve_mappings = false
-    --         })
-    --       end)
-      
-    --       require("lazy-lsp").setup {
-    --         configs = {
-    --           lua_ls = {
-    --              settings = {
-    --                Lua = {
-    --                  diagnostics = {
-    --                    -- Get the language server to recognize the `vim` global
-    --                    globals = { "vim" },
-    --                  },
-    --                },
-    --              },
-    --            },
-    --         },
-    --       }
-    --     end,
-    --   },
-    --   {
-    --     "hrsh7th/nvim-cmp",
-    --     -- load cmp on InsertEnter
-    --     event = "InsertEnter",
-    --     -- these dependencies will only be loaded when cmp loads
-    --     -- dependencies are always lazy-loaded unless specified otherwise
-    --     dependencies = {
-    --       "hrsh7th/cmp-nvim-lsp",
-    --       "hrsh7th/cmp-buffer",
-    --     },
-    --     config = function()
-    --       local cmp = require('cmp')
-    --       cmp.setup({
-    --         preselect = 'item',
-    --         completion = {
-    --           completeopt = 'menu,menuone,noinsert'
-    --         },
-    --         mapping = cmp.mapping.preset.insert({
-    --           ['<CR>'] = cmp.mapping.confirm({select = false}),
-    --         }),
-    --       })
-    --     end,
-    --   },
     {
       'smoka7/hop.nvim',
       version = "*",
       opts = {
           keys = 'etovxqpdygfblzhckisuran'
       }
-    }
+    },
+    -- LSP related plugins that only load when not in VSCode
+    not vim.g.vscode and {
+      "dundalek/lazy-lsp.nvim",
+      dependencies = {
+        "neovim/nvim-lspconfig",
+        {"VonHeikemen/lsp-zero.nvim", branch = "v3.x"},
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/nvim-cmp",
+      },
+      config = function()
+        local lsp_zero = require("lsp-zero")
+    
+        lsp_zero.on_attach(function(client, bufnr)
+          lsp_zero.default_keymaps({
+            buffer = bufnr,
+            preserve_mappings = false
+          })
+        end)
+    
+        require("lazy-lsp").setup {
+          configs = {
+            lua_ls = {
+               settings = {
+                 Lua = {
+                   diagnostics = {
+                     globals = { "vim" },
+                   },
+                 },
+               },
+             },
+          },
+        }
+      end,
+    } or nil,
+    not vim.g.vscode and {
+      "hrsh7th/nvim-cmp",
+      event = "InsertEnter",
+      dependencies = {
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+      },
+      config = function()
+        local cmp = require('cmp')
+        cmp.setup({
+          preselect = 'item',
+          completion = {
+            completeopt = 'menu,menuone,noinsert'
+          },
+          mapping = cmp.mapping.preset.insert({
+            ['<CR>'] = cmp.mapping.confirm({select = false}),
+          }),
+        })
+      end,
+    } or nil,
   },
   checker = { enabled = true },
 })

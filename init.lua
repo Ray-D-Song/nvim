@@ -2,65 +2,65 @@ package.path = package.path .. ";/Users/ray/.config/nvim/?.lua;/Users/ray-d-song
 
 require('lazy_config')
 
--- 输入模式键位配置
-vim.keymap.set('i', 'jj', '<Esc>')  -- 使用 jj 快速退出输入模式
+-- insert mode
+vim.keymap.set('i', 'jj', '<Esc>')  -- use jj to exit insert mode
 
--- 命令模式键位配置
+-- Command mode keymap configuration
 if vim.g.vscode then
-  -- VSCode 特定配置
-  vim.keymap.set('n', 'sa', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR>')          -- 保存文件
-  vim.keymap.set('n', 'wq', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR><Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- 保存并关闭文件
-  vim.keymap.set('n', 'qf', '<Cmd>call VSCodeCall("editor.action.quickFix")<CR>')              -- 显示快速修复建议
-  vim.keymap.set('n', 'gd', '<Cmd>call VSCodeCall("editor.action.revealDefinition")<CR>')      -- 跳转到定义
-  vim.keymap.set('n', 'gr', '<Cmd>call VSCodeCall("editor.action.goToReferences")<CR>')        -- 查看引用
-  vim.keymap.set('n', 'gs', '<Cmd>call VSCodeCall("workbench.action.findInFiles")<CR>')        -- 全局搜索
-  vim.keymap.set('n', 'cs', '<Cmd>call VSCodeCall("actions.find")<CR>')                        -- 当前文件内搜索
-  vim.keymap.set('n', 'x', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')   -- 关闭当前文件件
+  -- VSCode specific configuration
+  vim.keymap.set('n', 'sa', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR>')          -- Save file
+  vim.keymap.set('n', 'wq', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR><Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- Save and close file
+  vim.keymap.set('n', 'qf', '<Cmd>call VSCodeCall("editor.action.quickFix")<CR>')              -- Show quick fix suggestions
+  vim.keymap.set('n', 'gd', '<Cmd>call VSCodeCall("editor.action.revealDefinition")<CR>')      -- Go to definition
+  vim.keymap.set('n', 'gr', '<Cmd>call VSCodeCall("editor.action.goToReferences")<CR>')        -- View references
+  vim.keymap.set('n', 'gs', '<Cmd>call VSCodeCall("workbench.action.findInFiles")<CR>')        -- Global search
+  vim.keymap.set('n', 'cs', '<Cmd>call VSCodeCall("actions.find")<CR>')                        -- Search in current file
+  vim.keymap.set('n', 'x', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')   -- Close current file
 
-  -- 分屏操作键位
-  vim.keymap.set('n', '<space>sx', '<Cmd>call VSCodeCall("workbench.action.splitEditorDown")<CR>')    -- 水平分屏
-  vim.keymap.set('n', '<space>sy', '<Cmd>call VSCodeCall("workbench.action.splitEditorRight")<CR>')   -- 垂直分屏
-  vim.keymap.set('n', '<space>sc', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- 关闭当前分屏
+  -- Split screen operation keymap
+  vim.keymap.set('n', '<space>sx', '<Cmd>call VSCodeCall("workbench.action.splitEditorDown")<CR>')    -- Split screen horizontally
+  vim.keymap.set('n', '<space>sy', '<Cmd>call VSCodeCall("workbench.action.splitEditorRight")<CR>')   -- Split screen vertically
+  vim.keymap.set('n', '<space>sc', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- Close current split screen
 
-  -- 窗口切换键位
-  vim.keymap.set('n', '<space>sh', '<Cmd>call VSCodeCall("workbench.action.focusLeftGroup")<CR>')     -- 切换到左边窗口
-  vim.keymap.set('n', '<space>sl', '<Cmd>call VSCodeCall("workbench.action.focusRightGroup")<CR>')    -- 切换到右边窗口
-  vim.keymap.set('n', '<space>sk', '<Cmd>call VSCodeCall("workbench.action.focusAboveGroup")<CR>')    -- 切换到上边窗口
-  vim.keymap.set('n', '<space>sj', '<Cmd>call VSCodeCall("workbench.action.focusBelowGroup")<CR>')    -- 切换到下边窗口
+  -- Window switching keymap
+  vim.keymap.set('n', '<space>sh', '<Cmd>call VSCodeCall("workbench.action.focusLeftGroup")<CR>')     -- Switch to left window
+  vim.keymap.set('n', '<space>sl', '<Cmd>call VSCodeCall("workbench.action.focusRightGroup")<CR>')    -- Switch to right window
+  vim.keymap.set('n', '<space>sk', '<Cmd>call VSCodeCall("workbench.action.focusAboveGroup")<CR>')    -- Switch to top window
+  vim.keymap.set('n', '<space>sj', '<Cmd>call VSCodeCall("workbench.action.focusBelowGroup")<CR>')    -- Switch to bottom window
 else
-  -- NeoVim 原生配置
-  vim.keymap.set('n', 'sa', ':w<CR>')        -- 保存文件
-  vim.keymap.set('n', 'wq', ':wq<CR>')       -- 保存并关闭文件
-  vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>')      -- 显示 LSP 快速修复建议
-  vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')       -- 跳转到定义
-  vim.keymap.set('n', 'gr', ':lua vim.lsp.buf.references()<CR>')       -- 查看引用
-  vim.keymap.set('n', 'gs', ':lua require("telescope.builtin").live_grep()<CR>')              -- 使用 telescope 进行全局搜索
-  vim.keymap.set('n', 'cs', ':lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>') -- 使用 telescope 在当前文件中搜索
-  vim.keymap.set('n', 'x', ':q<CR>')         -- 关闭当前文件
+  -- NeoVim native configuration
+  vim.keymap.set('n', 'sa', ':w<CR>')        -- Save file
+  vim.keymap.set('n', 'wq', ':wq<CR>')       -- Save and close file
+  vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>')      -- Show LSP quick fix suggestions
+  vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')       -- Go to definition
+  vim.keymap.set('n', 'gr', ':lua vim.lsp.buf.references()<CR>')       -- View references
+  vim.keymap.set('n', 'gs', ':lua require("telescope.builtin").live_grep()<CR>')              -- Use telescope for global search
+  vim.keymap.set('n', 'cs', ':lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>') -- Use telescope to search in current file
+  vim.keymap.set('n', 'x', ':q<CR>')         -- Close current file
 
-  -- 分屏操作键位
-  vim.keymap.set('n', '<space>sx', ':split<CR>')   -- 水平分屏
-  vim.keymap.set('n', '<space>sy', ':vsplit<CR>')  -- 垂直分屏
-  vim.keymap.set('n', '<space>sc', ':close<CR>')   -- 关闭当前分屏
+  -- Split screen operation keymap
+  vim.keymap.set('n', '<space>sx', ':split<CR>')   -- Split screen horizontally
+  vim.keymap.set('n', '<space>sy', ':vsplit<CR>')  -- Split screen vertically
+  vim.keymap.set('n', '<space>sc', ':close<CR>')   -- Close current split screen
   
-  -- 窗口切换键位
-  vim.keymap.set('n', '<space>sh', '<C-w>h')  -- 切换到左边窗口
-  vim.keymap.set('n', '<space>sl', '<C-w>l')  -- 切换到右边窗口
-  vim.keymap.set('n', '<space>sk', '<C-w>k')  -- 切换到上边窗口
-  vim.keymap.set('n', '<space>sj', '<C-w>j')  -- 切换到下边窗口
+  -- Window switching keymap
+  vim.keymap.set('n', '<space>sh', '<C-w>h')  -- Switch to left window
+  vim.keymap.set('n', '<space>sl', '<C-w>l')  -- Switch to right window
+  vim.keymap.set('n', '<space>sk', '<C-w>k')  -- Switch to top window
+  vim.keymap.set('n', '<space>sj', '<C-w>j')  -- Switch to bottom window
 end
 
--- 移动相关键位配置
-vim.keymap.set('n', '<space>k', '10k')  -- 向上移动 10 行
-vim.keymap.set('n', '<space>j', '10j')  -- 向下移动 10 行
-vim.keymap.set('n', '<space>h', '10h')  -- 向左移动 10 个字符
-vim.keymap.set('n', '<space>l', '10l')  -- 向右移动 10 个字符
+-- Movement related keymap configuration
+vim.keymap.set('n', '<space>k', '10k')  -- Move up 10 lines
+vim.keymap.set('n', '<space>j', '10j')  -- Move down 10 lines
+vim.keymap.set('n', '<space>h', '10h')  -- Move left 10 characters
+vim.keymap.set('n', '<space>l', '10l')  -- Move right 10 characters
 
--- 快速移动键位（使用 Hop）
-vim.keymap.set('n', '<space><space>k', ':HopLineStartAC<CR>')  -- 向上移动
-vim.keymap.set('n', '<space><space>j', ':HopLineStartBC<CR>')  -- 向下移动
-vim.keymap.set('n', '<space><space>h', ':HopWordBC<CR>')  -- 向左移动 20 个字符
-vim.keymap.set('n', '<space><space>l', ':HopWordAC<CR>')  -- 向右移动 20 个字符
+-- Quick movement keymap (using Hop)
+vim.keymap.set('n', '<space<space>k', ':HopLineStartBC<CR>')  -- Move up
+vim.keymap.set('n', '<space<space>j', ':HopLineStartAC<CR>')  -- Move down
+vim.keymap.set('n', '<space<space>h', ':HopWordBC<CR>')  -- Move left 20 characters
+vim.keymap.set('n', '<space<space>l', ':HopWordAC<CR>')  -- Move right 20 characters
 
 vim.opt.termguicolors = true
 
