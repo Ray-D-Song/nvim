@@ -1,4 +1,4 @@
-package.path = package.path .. ";/Users/ray/.config/nvim/?.lua;/Users/ray-d-song/.config/nvim/?.lua"
+package.path = package.path .. ";/Users/ray/.config/nvim/?.lua;/Users/ray-d-song/.config/nvim/?.lua;/home/ray/.config/nvim/?.lua"
 
 require('lazy_config')
 
