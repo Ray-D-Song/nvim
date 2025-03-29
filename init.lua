@@ -18,15 +18,15 @@ if vim.g.vscode then
   vim.keymap.set('n', 'x', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')   -- Close current file
 
   -- Split screen operation keymap
-  vim.keymap.set('n', '<space>sx', '<Cmd>call VSCodeCall("workbench.action.splitEditorDown")<CR>')    -- Split screen horizontally
-  vim.keymap.set('n', '<space>sy', '<Cmd>call VSCodeCall("workbench.action.splitEditorRight")<CR>')   -- Split screen vertically
-  vim.keymap.set('n', '<space>sc', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- Close current split screen
+  vim.keymap.set('n', 'wx', '<Cmd>call VSCodeCall("workbench.action.splitEditorDown")<CR>')    -- Split screen horizontally
+  vim.keymap.set('n', 'wy', '<Cmd>call VSCodeCall("workbench.action.splitEditorRight")<CR>')   -- Split screen vertically
+  vim.keymap.set('n', 'wc', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- Close current split screen
 
   -- Window switching keymap
-  vim.keymap.set('n', '<space>sh', '<Cmd>call VSCodeCall("workbench.action.focusLeftGroup")<CR>')     -- Switch to left window
-  vim.keymap.set('n', '<space>sl', '<Cmd>call VSCodeCall("workbench.action.focusRightGroup")<CR>')    -- Switch to right window
-  vim.keymap.set('n', '<space>sk', '<Cmd>call VSCodeCall("workbench.action.focusAboveGroup")<CR>')    -- Switch to top window
-  vim.keymap.set('n', '<space>sj', '<Cmd>call VSCodeCall("workbench.action.focusBelowGroup")<CR>')    -- Switch to bottom window
+  vim.keymap.set('n', 'wh', '<Cmd>call VSCodeCall("workbench.action.focusLeftGroup")<CR>')     -- Switch to left window
+  vim.keymap.set('n', 'wl', '<Cmd>call VSCodeCall("workbench.action.focusRightGroup")<CR>')    -- Switch to right window
+  vim.keymap.set('n', 'wk', '<Cmd>call VSCodeCall("workbench.action.focusAboveGroup")<CR>')    -- Switch to top window
+  vim.keymap.set('n', 'wj', '<Cmd>call VSCodeCall("workbench.action.focusBelowGroup")<CR>')    -- Switch to bottom window
 else
   -- NeoVim native configuration
   vim.keymap.set('n', 'sa', ':w<CR>')        -- Save file
@@ -39,15 +39,15 @@ else
   vim.keymap.set('n', 'x', ':q<CR>')         -- Close current file
 
   -- Split screen operation keymap
-  vim.keymap.set('n', '<space>sx', ':split<CR>')   -- Split screen horizontally
-  vim.keymap.set('n', '<space>sy', ':vsplit<CR>')  -- Split screen vertically
-  vim.keymap.set('n', '<space>sc', ':close<CR>')   -- Close current split screen
+  vim.keymap.set('n', 'wx', ':split<CR>')   -- Split screen horizontally
+  vim.keymap.set('n', 'wy', ':vsplit<CR>')  -- Split screen vertically
+  vim.keymap.set('n', 'wc', ':close<CR>')   -- Close current split screen
   
   -- Window switching keymap
-  vim.keymap.set('n', '<space>sh', '<C-w>h')  -- Switch to left window
-  vim.keymap.set('n', '<space>sl', '<C-w>l')  -- Switch to right window
-  vim.keymap.set('n', '<space>sk', '<C-w>k')  -- Switch to top window
-  vim.keymap.set('n', '<space>sj', '<C-w>j')  -- Switch to bottom window
+  vim.keymap.set('n', 'wh', '<C-w>h')  -- Switch to left window
+  vim.keymap.set('n', 'wl', '<C-w>l')  -- Switch to right window
+  vim.keymap.set('n', 'wk', '<C-w>k')  -- Switch to top window
+  vim.keymap.set('n', 'wj', '<C-w>j')  -- Switch to bottom window
 end
 
 -- Movement related keymap configuration
