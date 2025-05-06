@@ -22,9 +22,13 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
   spec = {
     -- 加载样式配置
-    unpack(require('style.config')),
+    {
+      import = 'style.config',
+    },
     -- 加载 lsp 配置
-    unpack(require('lsp.config')),
+    {
+      import = 'lsp.config',
+    },
     -- 其他配置
     {
       "nvim-tree/nvim-tree.lua",
