@@ -52,3 +52,9 @@ function OpenTerminal()
   vim.cmd('terminal')
 end
 vim.api.nvim_create_user_command('Term', OpenTerminal, {})
+
+-- Diagnostic keymaps
+vim.keymap.set('n', '<space>e', ':lua vim.diagnostic.open_float()<CR>')  -- Show diagnostic in float window
+vim.keymap.set('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>')         -- Go to previous diagnostic
+vim.keymap.set('n', ']d', ':lua vim.diagnostic.goto_next()<CR>')         -- Go to next diagnostic
+vim.keymap.set('n', '<space>q', ':lua vim.diagnostic.setloclist()<CR>')  -- Show diagnostic list
