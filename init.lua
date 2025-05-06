@@ -1,1 +1,3 @@
-require('keymap.index')
+require('lazy_index')
+require('keymap.config')
+
