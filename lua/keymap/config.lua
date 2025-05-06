@@ -29,10 +29,10 @@ vim.keymap.set('n', '<space>h', '10h')  -- Move left 10 characters
 vim.keymap.set('n', '<space>l', '10l')  -- Move right 10 characters
 
 -- Quick movement keymap (using Hop)
-vim.keymap.set('n', '<space<space>k', ':HopLineStartBC<CR>')  -- Move up
-vim.keymap.set('n', '<space<space>j', ':HopLineStartAC<CR>')  -- Move down
-vim.keymap.set('n', '<space<space>h', ':HopWordBC<CR>')  -- Move left 20 characters
-vim.keymap.set('n', '<space<space>l', ':HopWordAC<CR>')  -- Move right 20 characters
+vim.keymap.set('n', '<space><space>k', ':HopLineStartBC<CR>')  -- Move up
+vim.keymap.set('n', '<space><space>j', ':HopLineStartAC<CR>')  -- Move down
+vim.keymap.set('n', '<space><space>h', ':HopWordBC<CR>')  -- Move left 20 characters
+vim.keymap.set('n', '<space><space>l', ':HopWordAC<CR>')  -- Move right 20 characters
 
 vim.opt.termguicolors = true
 

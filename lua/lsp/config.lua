@@ -1,4 +1,8 @@
 return {
+  -- 智能注释插件
+  {
+    'numToStr/Comment.nvim',
+  },
   --  使用 mason 安装 lsp
   {
     'williamboman/mason.nvim',
