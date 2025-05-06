@@ -35,6 +35,9 @@ require("lazy").setup({
     },
     -- 其他配置
     {
+      import = 'editor.telescope'
+    },
+    {
       "nvim-tree/nvim-tree.lua",
       version = "*",
       lazy = false,
