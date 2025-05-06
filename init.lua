@@ -6,49 +6,25 @@ require('lazy_config')
 vim.keymap.set('i', 'jj', '<Esc>')  -- use jj to exit insert mode
 
 -- Command mode keymap configuration
-if vim.g.vscode then
-  -- VSCode specific configuration
-  vim.keymap.set('n', 'sa', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR>')          -- Save file
-  vim.keymap.set('n', 'wq', '<Cmd>call VSCodeCall("workbench.action.files.save")<CR><Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- Save and close file
-  vim.keymap.set('n', 'qf', '<Cmd>call VSCodeCall("editor.action.quickFix")<CR>')              -- Show quick fix suggestions
-  vim.keymap.set('n', 'gd', '<Cmd>call VSCodeCall("editor.action.revealDefinition")<CR>')      -- Go to definition
-  vim.keymap.set('n', 'gr', '<Cmd>call VSCodeCall("editor.action.goToReferences")<CR>')        -- View references
-  vim.keymap.set('n', 'gs', '<Cmd>call VSCodeCall("workbench.action.findInFiles")<CR>')        -- Global search
-  vim.keymap.set('n', 'cs', '<Cmd>call VSCodeCall("actions.find")<CR>')                        -- Search in current file
-  vim.keymap.set('n', 'x', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')   -- Close current file
+vim.keymap.set('n', 'sa', ':w<CR>')        -- Save file
+vim.keymap.set('n', 'wq', ':wq<CR>')       -- Save and close file
+vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>')      -- Show LSP quick fix suggestions
+vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')       -- Go to definition
+vim.keymap.set('n', 'gr', ':lua vim.lsp.buf.references()<CR>')       -- View references
+vim.keymap.set('n', 'gs', ':lua require("telescope.builtin").live_grep()<CR>')              -- Use telescope for global search
+vim.keymap.set('n', 'cs', ':lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>') -- Use telescope to search in current file
+vim.keymap.set('n', 'x', ':q<CR>')         -- Close current file
 
-  -- Split screen operation keymap
-  vim.keymap.set('n', 'wx', '<Cmd>call VSCodeCall("workbench.action.splitEditorDown")<CR>')    -- Split screen horizontally
-  vim.keymap.set('n', 'wy', '<Cmd>call VSCodeCall("workbench.action.splitEditorRight")<CR>')   -- Split screen vertically
-  vim.keymap.set('n', 'wc', '<Cmd>call VSCodeCall("workbench.action.closeActiveEditor")<CR>')  -- Close current split screen
+-- Split screen operation keymap
+vim.keymap.set('n', 'wx', ':split<CR>')   -- Split screen horizontally
+vim.keymap.set('n', 'wy', ':vsplit<CR>')  -- Split screen vertically
+vim.keymap.set('n', 'wc', ':close<CR>')   -- Close current split screen
 
-  -- Window switching keymap
-  vim.keymap.set('n', 'wh', '<Cmd>call VSCodeCall("workbench.action.focusLeftGroup")<CR>')     -- Switch to left window
-  vim.keymap.set('n', 'wl', '<Cmd>call VSCodeCall("workbench.action.focusRightGroup")<CR>')    -- Switch to right window
-  vim.keymap.set('n', 'wk', '<Cmd>call VSCodeCall("workbench.action.focusAboveGroup")<CR>')    -- Switch to top window
-  vim.keymap.set('n', 'wj', '<Cmd>call VSCodeCall("workbench.action.focusBelowGroup")<CR>')    -- Switch to bottom window
-else
-  -- NeoVim native configuration
-  vim.keymap.set('n', 'sa', ':w<CR>')        -- Save file
-  vim.keymap.set('n', 'wq', ':wq<CR>')       -- Save and close file
-  vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>')      -- Show LSP quick fix suggestions
-  vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')       -- Go to definition
-  vim.keymap.set('n', 'gr', ':lua vim.lsp.buf.references()<CR>')       -- View references
-  vim.keymap.set('n', 'gs', ':lua require("telescope.builtin").live_grep()<CR>')              -- Use telescope for global search
-  vim.keymap.set('n', 'cs', ':lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>') -- Use telescope to search in current file
-  vim.keymap.set('n', 'x', ':q<CR>')         -- Close current file
-
-  -- Split screen operation keymap
-  vim.keymap.set('n', 'wx', ':split<CR>')   -- Split screen horizontally
-  vim.keymap.set('n', 'wy', ':vsplit<CR>')  -- Split screen vertically
-  vim.keymap.set('n', 'wc', ':close<CR>')   -- Close current split screen
-  
-  -- Window switching keymap
-  vim.keymap.set('n', 'wh', '<C-w>h')  -- Switch to left window
-  vim.keymap.set('n', 'wl', '<C-w>l')  -- Switch to right window
-  vim.keymap.set('n', 'wk', '<C-w>k')  -- Switch to top window
-  vim.keymap.set('n', 'wj', '<C-w>j')  -- Switch to bottom window
-end
+-- Window switching keymap
+vim.keymap.set('n', 'wh', '<C-w>h')  -- Switch to left window
+vim.keymap.set('n', 'wl', '<C-w>l')  -- Switch to right window
+vim.keymap.set('n', 'wk', '<C-w>k')  -- Switch to top window
+vim.keymap.set('n', 'wj', '<C-w>j')  -- Switch to bottom window
 
 -- Movement related keymap configuration
 vim.keymap.set('n', '<space>k', '10k')  -- Move up 10 lines
