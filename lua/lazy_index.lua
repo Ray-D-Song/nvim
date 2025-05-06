@@ -29,6 +29,10 @@ require("lazy").setup({
     {
       import = 'lsp.config',
     },
+    -- 加载 ai 配置
+    {
+      import = 'ai.avante',
+    },
     -- 其他配置
     {
       "nvim-tree/nvim-tree.lua",
