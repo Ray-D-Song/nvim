@@ -64,18 +64,17 @@ return {
           'pyright',
           'rust_analyzer',
         },
+        handlers = {
+          function(server_name)
+            lspconfig[server_name].setup({
+              capabilities = capabilities,
+            })
+          end,
+        }
       })
 
       -- 设置 LSP 配置
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      
-      mason_lspconfig.setup_handlers({
-        function(server_name)
-          lspconfig[server_name].setup({
-            capabilities = capabilities,
-          })
-        end,
-      })
     end,
   },
   -- 使用 blink.nvim 进行补全
