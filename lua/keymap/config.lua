@@ -8,6 +8,7 @@ vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>')      -- Show LSP
 vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')       -- Go to definition
 vim.keymap.set('n', 'gr', ':lua vim.lsp.buf.references()<CR>')       -- View references
 vim.keymap.set('n', 'gs', ':lua require("telescope.builtin").live_grep()<CR>')              -- Use telescope for global search
+vim.keymap.set('n', '<D-S-f>', ':lua require("telescope.builtin").live_grep()<CR>')        -- Use Command+Shift+F for global search
 vim.keymap.set('n', 'cs', ':lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>') -- Use telescope to search in current file
 vim.keymap.set('n', 'x', ':q<CR>')         -- Close current file
 
