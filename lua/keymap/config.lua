@@ -10,6 +10,7 @@ vim.keymap.set('n', 'gr', ':lua vim.lsp.buf.references()<CR>')       -- View ref
 vim.keymap.set('n', 'gs', ':lua require("telescope.builtin").live_grep()<CR>')              -- Use telescope for global search
 vim.keymap.set('n', '<D-S-f>', ':lua require("telescope.builtin").live_grep()<CR>')        -- Use Command+Shift+F for global search
 vim.keymap.set('n', 'cs', ':lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>') -- Use telescope to search in current file
+vim.keymap.set('n', '<space>f', ':lua require("telescope.builtin").find_files()<CR>')      -- Use telescope to find files by name
 vim.keymap.set('n', 'x', ':q<CR>')         -- Close current file
 
 -- Split screen operation keymap
@@ -22,6 +23,10 @@ vim.keymap.set('n', 'wh', '<C-w>h')  -- Switch to left window
 vim.keymap.set('n', 'wl', '<C-w>l')  -- Switch to right window
 vim.keymap.set('n', 'wk', '<C-w>k')  -- Switch to top window
 vim.keymap.set('n', 'wj', '<C-w>j')  -- Switch to bottom window
+
+-- Tab switching keymap
+vim.keymap.set('n', 'th', 'gT')   -- Switch to previous tab
+vim.keymap.set('n', 'tl', 'gt')   -- Switch to next tab
 
 -- Movement related keymap configuration
 vim.keymap.set('n', '<space>k', '10k')  -- Move up 10 lines

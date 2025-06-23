@@ -6,10 +6,16 @@ return {
     -- add any opts here
     -- for example
     provider = "gemini",
-    gemini = {
-      model = "gemini-2.5-flash-preview-04-17", -- your desired model (or use gpt-4o, etc.)
-      timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
+    providers = {
+      gemini = {
+        model = "gemini-2.5-flash", -- your desired model (or use gpt-4o, etc.)
+        timeout = 300000, -- Timeout in milliseconds, increase this for reasoning models
+      },
     },
+    behaviour = {
+      auto_suggestions = true,
+      enable_cursor_planning_mode = true
+    }
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = "make",
