@@ -1,4 +1,4 @@
--- 安装 lazy.nvim
+-- install Lazy
 local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazy_path) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -18,22 +18,14 @@ vim.opt.rtp:prepend(lazy_path)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- 设置 lazy.nvim
 require("lazy").setup({
   spec = {
-    -- 加载样式配置
     {
       import = 'style.config',
     },
-    -- 加载 lsp 配置
     {
       import = 'lsp.config',
     },
-    -- 加载 ai 配置
-    {
-      import = 'ai.avante',
-    },
-    -- 其他配置
     {
       import = 'editor.telescope'
     },
@@ -49,13 +41,13 @@ require("lazy").setup({
       end,
     },
     {
-      'deparr/tairiki.nvim',
+      'Mofiqul/vscode.nvim',
       lazy = false,
       priority = 1000,
       config = function()
-        require('tairiki').setup {
+        require('vscode').setup {
         }
-        require('tairiki').load()
+        require('vscode').load()
       end,
     },
     {

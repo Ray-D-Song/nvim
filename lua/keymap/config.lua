@@ -53,11 +53,14 @@ vim.o.scrolloff = 10
 
 -- terminal config
 function OpenTerminal()
-  vim.cmd('botright split')
-  vim.cmd('resize 10')
+  vim.cmd('botright vsplit')
+  vim.cmd('vertical resize 50')
   vim.cmd('terminal')
 end
 vim.api.nvim_create_user_command('Term', OpenTerminal, {})
+vim.keymap.set('n', '<leader>t', ':Term<CR>')
+-- 简化终端退出键位映射
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<space>e', ':lua vim.diagnostic.open_float()<CR>')  -- Show diagnostic in float window
