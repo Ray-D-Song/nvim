@@ -30,6 +30,12 @@ require("lazy").setup({
       import = 'editor.telescope'
     },
     {
+      "mg979/vim-visual-multi",
+      branch = "master",
+      init = function ()
+      end
+    },
+    {
       "nvim-tree/nvim-tree.lua",
       version = "*",
       lazy = false,

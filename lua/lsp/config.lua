@@ -10,47 +10,12 @@ return {
       require('mason').setup()
     end,
   },
-  -- 添加 nvim-cmp 相关插件
-  {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-    },
-    config = function()
-      local cmp = require('cmp')
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'buffer' },
-          { name = 'path' },
-        })
-      })
-    end
-  },
   -- LSP 配置
   {
     'neovim/nvim-lspconfig',
     dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-      'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
       local lspconfig = require('lspconfig')
@@ -73,8 +38,8 @@ return {
         }
       })
 
-      -- 设置 LSP 配置
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      -- 设置 LSP 配置  
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
     end,
   },
   -- 使用 blink.nvim 进行补全
@@ -110,7 +75,10 @@ return {
       },
 
       -- (默认) 仅在手动触发时显示文档弹出窗口
-      completion = { documentation = { auto_show = true } },
+      completion = { 
+        documentation = { auto_show = true },
+        menu = { max_height = 5 }
+      },
 
       -- 默认启用的提供者列表, 以便你可以扩展它
       -- 在配置中, 无需重新定义它, 因为 `opts_extend`
@@ -126,5 +94,21 @@ return {
       fuzzy = { implementation = "prefer_rust_with_warning" }
     },
     opts_extend = { "sources.default" }
+  },
+  -- 自动括号配对
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = function()
+      require('nvim-autopairs').setup({
+        check_ts = true,
+        ts_config = {
+          lua = {'string'},
+          javascript = {'string', 'template_string'},
+        },
+        disable_filetype = { "TelescopePrompt", "vim" },
+      })
+      
+    end
   }
 }

@@ -67,3 +67,28 @@ vim.keymap.set('n', '<space>e', ':lua vim.diagnostic.open_float()<CR>')  -- Show
 vim.keymap.set('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>')         -- Go to previous diagnostic
 vim.keymap.set('n', ']d', ':lua vim.diagnostic.goto_next()<CR>')         -- Go to next diagnostic
 vim.keymap.set('n', '<space>q', ':lua vim.diagnostic.setloclist()<CR>')  -- Show diagnostic list
+
+-- Diagnostic configuration
+vim.diagnostic.config({
+  float = {
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
+})
+
+-- Auto show diagnostic on cursor hold
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    local opts = {
+      focusable = false,
+      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+      border = 'rounded',
+      source = 'always',
+      prefix = ' ',
+      scope = 'cursor',
+    }
+    vim.diagnostic.open_float(nil, opts)
+  end
+})
