@@ -7,10 +7,41 @@ vim.keymap.set('n', 'wq', ':wq<CR>')       -- Save and close file
 vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>')      -- Show LSP quick fix suggestions
 vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')       -- Go to definition
 vim.keymap.set('n', 'gr', ':lua vim.lsp.buf.references()<CR>')       -- View references
-vim.keymap.set('n', 'gs', ':lua require("telescope.builtin").live_grep()<CR>')              -- Use telescope for global search
-vim.keymap.set('n', '<D-S-f>', ':lua require("telescope.builtin").live_grep()<CR>')        -- Use Command+Shift+F for global search
-vim.keymap.set('n', 'cs', ':lua require("telescope.builtin").current_buffer_fuzzy_find()<CR>') -- Use telescope to search in current file
-vim.keymap.set('n', '<space>f', ':lua require("telescope.builtin").find_files()<CR>')      -- Use telescope to find files by name
+vim.keymap.set('n', 'K', ':lua vim.lsp.buf.hover()<CR>')             -- Show hover information
+vim.keymap.set('n', '<space>K', function()
+  -- Get hover information and copy to clipboard
+  local params = vim.lsp.util.make_position_params()
+  vim.lsp.buf_request(0, 'textDocument/hover', params, function(err, result, ctx, config)
+    if result and result.contents then
+      local content = ''
+      if type(result.contents) == 'string' then
+        content = result.contents
+      elseif result.contents.value then
+        content = result.contents.value
+      elseif type(result.contents) == 'table' then
+        for _, item in ipairs(result.contents) do
+          if type(item) == 'string' then
+            content = content .. item .. '\n'
+          elseif item.value then
+            content = content .. item.value .. '\n'
+          end
+        end
+      end
+      if content ~= '' then
+        vim.fn.setreg('+', content)
+        print('Hover content copied to clipboard')
+      else
+        print('No hover content available')
+      end
+    else
+      print('No hover information available')
+    end
+  end)
+end, { desc = 'Copy hover content to clipboard' })
+vim.keymap.set('n', 'gs', ':lua require("mini.pick").builtin.grep_live()<CR>')              -- Use mini.pick for global search
+vim.keymap.set('n', '<D-S-f>', ':lua require("mini.pick").builtin.grep_live()<CR>')        -- Use Command+Shift+F for global search
+vim.keymap.set('n', 'cs', ':lua require("mini.pick").builtin.grep()<CR>') -- Use mini.pick to search in current file
+vim.keymap.set('n', '<space>f', ':lua require("mini.pick").builtin.files()<CR>')      -- Use mini.pick to find files by name
 vim.keymap.set('n', 'x', ':q<CR>')         -- Close current file
 
 -- Split screen operation keymap
@@ -24,9 +55,9 @@ vim.keymap.set('n', 'wl', '<C-w>l')  -- Switch to right window
 vim.keymap.set('n', 'wk', '<C-w>k')  -- Switch to top window
 vim.keymap.set('n', 'wj', '<C-w>j')  -- Switch to bottom window
 
--- Tab switching keymap
-vim.keymap.set('n', 'th', 'gT')   -- Switch to previous tab
-vim.keymap.set('n', 'tl', 'gt')   -- Switch to next tab
+-- Tab switching keymap (barbar plugin)
+vim.keymap.set('n', 'th', ':BufferPrevious<CR>')   -- Switch to previous buffer
+vim.keymap.set('n', 'tl', ':BufferNext<CR>')       -- Switch to next buffer
 
 -- Movement related keymap configuration
 vim.keymap.set('n', '<space>k', '10k')  -- Move up 10 lines
@@ -67,6 +98,22 @@ vim.keymap.set('n', '<space>e', ':lua vim.diagnostic.open_float()<CR>')  -- Show
 vim.keymap.set('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>')         -- Go to previous diagnostic
 vim.keymap.set('n', ']d', ':lua vim.diagnostic.goto_next()<CR>')         -- Go to next diagnostic
 vim.keymap.set('n', '<space>q', ':lua vim.diagnostic.setloclist()<CR>')  -- Show diagnostic list
+
+-- Copy diagnostic content to clipboard
+vim.keymap.set('n', '<space>c', function()
+  local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 })
+  if #diagnostics > 0 then
+    local messages = {}
+    for _, diagnostic in ipairs(diagnostics) do
+      table.insert(messages, diagnostic.message)
+    end
+    local content = table.concat(messages, '\n')
+    vim.fn.setreg('+', content)
+    print('Diagnostic copied to clipboard')
+  else
+    print('No diagnostic at cursor')
+  end
+end, { desc = 'Copy diagnostic to clipboard' })
 
 -- Diagnostic configuration
 vim.diagnostic.config({
