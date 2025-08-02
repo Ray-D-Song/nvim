@@ -28,6 +28,9 @@ return {
           'clangd',
           'pyright',
           'rust_analyzer',
+          'eslint',
+          'vuels',
+          'cmake',
         },
         handlers = {
           function(server_name)
@@ -40,6 +43,24 @@ return {
 
       -- 设置 LSP 配置  
       local capabilities = vim.lsp.protocol.make_client_capabilities()
+    end,
+  },
+  -- 安装调试适配器
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'jay-babu/mason-nvim-dap.nvim',
+    },
+    config = function()
+      local mason_nvim_dap = require('mason-nvim-dap')
+      mason_nvim_dap.setup({
+        ensure_installed = {
+          'js-debug-adapter',
+          'python',
+        },
+        handlers = {},
+      })
     end,
   },
   -- 使用 blink.nvim 进行补全
