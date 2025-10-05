@@ -1,4 +1,3 @@
--- install Lazy
 local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazy_path) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -30,9 +29,12 @@ require("lazy").setup({
       import = 'editor.telescope'
     },
     {
+      import = 'editor.auto-session'
+    },
+    {
       "mg979/vim-visual-multi",
       branch = "master",
-      init = function ()
+      init = function()
       end
     },
     {
@@ -43,9 +45,20 @@ require("lazy").setup({
         "nvim-tree/nvim-web-devicons",
       },
       config = function()
-        require("nvim-tree").setup {}
+        require("nvim-tree").setup {
+          sync_root_with_cwd = true,
+          respect_buf_cwd = true,
+          update_focused_file = {
+            enable = true,
+            update_root = false,
+          },
+          view = {
+            preserve_window_proportions = true,
+          },
+        }
       end,
     },
+    -- Theme
     {
       'Mofiqul/vscode.nvim',
       lazy = false,
@@ -64,5 +77,7 @@ require("lazy").setup({
       }
     },
   },
-  checker = { enabled = true },
+  checker = { enabled = false },
 })
+
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"

@@ -1,135 +1,174 @@
+local gopls_config_fn = require('lsp.go.config')
+
 return {
-  -- 智能注释插件
   {
-    'numToStr/Comment.nvim',
-  },
-  --  使用 mason 安装 lsp
-  {
-    'williamboman/mason.nvim',
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
     config = function()
-      require('mason').setup()
-    end,
-  },
-  -- LSP 配置
-  {
-    'neovim/nvim-lspconfig',
-    dependencies = {
+        require('nvim-treesitter.configs').setup({
+          ensure_installed = {
+            'lua', 'vim', 'vimdoc', 'query',
+            'javascript', 'typescript', 'tsx', 'json',
+            'html', 'css', 'python', 'rust', 'c', 'cpp',
+            'php', 'vue', 'markdown', 'go'
+          },
+          sync_install = false,
+          highlight = {
+            enable = true,
+            additional_vim_regex_highlighting = false,
+          },
+          indent = {
+            enable = true
+          },
+        })
+      end,
+    },
+    {
+      'numToStr/Comment.nvim',
+    },
+    {
       'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
+      config = function()
+        require('mason').setup()
+      end,
     },
-    config = function()
-      local lspconfig = require('lspconfig')
-      local mason_lspconfig = require('mason-lspconfig')
-      
-      -- 设置 LSP 服务器
-      mason_lspconfig.setup({
-        ensure_installed = {
-          'lua_ls',
-          'clangd',
-          'pyright',
-          'rust_analyzer',
-          'eslint',
-          'vuels',
-          'cmake',
-        },
-        handlers = {
-          function(server_name)
-            lspconfig[server_name].setup({
-              capabilities = capabilities,
-            })
-          end,
-        }
-      })
-
-      -- 设置 LSP 配置  
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-    end,
-  },
-  -- 安装调试适配器
-  {
-    'mfussenegger/nvim-dap',
-    dependencies = {
-      'williamboman/mason.nvim',
-      'jay-babu/mason-nvim-dap.nvim',
+    {
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      dependencies = { 'williamboman/mason.nvim' },
+      config = function()
+        require('mason-tool-installer').setup({
+        })
+      end,
     },
-    config = function()
-      local mason_nvim_dap = require('mason-nvim-dap')
-      mason_nvim_dap.setup({
-        ensure_installed = {
-          'js-debug-adapter',
-          'python',
-        },
-        handlers = {},
-      })
-    end,
-  },
-  -- 使用 blink.nvim 进行补全
-  {
-    'saghen/blink.cmp',
-    -- 可选: 提供 snippets 用于 snippet 源
-    dependencies = { 'rafamadriz/friendly-snippets' },
-
-    -- 使用一个发布标签来下载预构建的二进制文件
-    version = '1.*',
-
-    ---@module 'blink.cmp'
-    ---@type blink.cmp.Config
-    opts = {
-      -- 'default' (recommended) 用于类似内置补全的映射 (C-y 用于接受)
-      -- 'super-tab' 用于类似 vscode 的映射 (tab 用于接受)
-      -- 'enter' 用于接受
-      -- 'none' 用于没有映射
-      --
-      -- 所有预设都有以下映射:
-      -- C-space: 打开菜单或打开文档(如果已打开)
-      -- C-n/C-p 或 Up/Down: 选择下一个/上一个项目
-      -- C-e: 隐藏菜单
-      -- C-k: 切换签名帮助(如果 signature.enabled = true)
-      --
-      -- 查看 :h blink-cmp-config-keymap 定义自己的映射
-      keymap = { preset = 'super-tab' },
-
-      appearance = {
-        -- 'mono' (默认) 用于 'Nerd Font Mono' 或 'normal' 用于 'Nerd Font'
-        -- 调整间距以确保图标对齐
-        nerd_font_variant = 'mono'
+    {
+      'neovim/nvim-lspconfig',
+      dependencies = {
+        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim',
       },
-
-      -- (默认) 仅在手动触发时显示文档弹出窗口
-      completion = { 
-        documentation = { auto_show = true },
-        menu = { max_height = 5 }
-      },
-
-      -- 默认启用的提供者列表, 以便你可以扩展它
-      -- 在配置中, 无需重新定义它, 因为 `opts_extend`
-      sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
-      },
-
-      -- (默认) 用于拼写错误抵抗和显著更好性能的 Rust 模糊匹配器
-      -- 你可以使用 `implementation = "lua"` 或回退到 lua 实现,
-      -- 当 Rust 模糊匹配器不可用时, 使用 `implementation = "prefer_rust"`
-      --
-      -- 查看模糊匹配文档了解更多信息
-      fuzzy = { implementation = "prefer_rust_with_warning" }
+      config = function()
+        local lspconfig = require('lspconfig')
+        local mason_lspconfig = require('mason-lspconfig')
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        -- Lsp key bindings
+        local on_attach = function(client, bufnr)
+          local opts = { noremap = true, silent = true, buffer = bufnr }
+          -- Go definition
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+          -- Go declaration
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+          -- Go implementation
+          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+          -- Show help
+          vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+          -- Show message
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+          -- Rename
+          vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+          -- Code action
+          vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+          -- Find ref
+          vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        end
+        mason_lspconfig.setup({
+          ensure_installed = {
+            'lua_ls',
+            'clangd',
+            'pyright',
+            'rust_analyzer',
+            'eslint',
+            'ts_ls',
+            'vuels',
+            'cmake',
+            'intelephense',
+            'phpactor',
+            'psalm',
+            'gopls'
+          },
+          handlers = {
+            function(server_name)
+              lspconfig[server_name].setup({
+                capabilities = capabilities,
+                on_attach = on_attach,
+              })
+            end,
+            -- TypeScript/JavaScript
+            ts_ls = function()
+              lspconfig.ts_ls.setup({
+                capabilities = capabilities,
+                on_attach = on_attach,
+                settings = {
+                  implicitProjectConfiguration = {
+                    checkJs = true
+                  },
+                }
+              })
+            end,
+            -- Go
+            gopls = function()
+              gopls_config_fn(lspconfig, capabilities, on_attach)
+            end
+          }
+        })
+      end,
     },
-    opts_extend = { "sources.default" }
-  },
-  -- 自动括号配对
-  {
-    'windwp/nvim-autopairs',
-    event = "InsertEnter",
-    config = function()
-      require('nvim-autopairs').setup({
-        check_ts = true,
-        ts_config = {
-          lua = {'string'},
-          javascript = {'string', 'template_string'},
+    {
+      'mfussenegger/nvim-dap',
+      dependencies = {
+        'williamboman/mason.nvim',
+        'jay-babu/mason-nvim-dap.nvim',
+      },
+      config = function()
+        local mason_nvim_dap = require('mason-nvim-dap')
+        mason_nvim_dap.setup({
+          ensure_installed = {
+            'js-debug-adapter',
+            'python',
+          },
+          handlers = {},
+        })
+      end,
+    },
+    {
+      'saghen/blink.cmp',
+      dependencies = { 'rafamadriz/friendly-snippets' },
+
+      version = '1.*',
+
+      ---@module 'blink.cmp'
+      ---@type blink.cmp.Config
+      opts = {
+        keymap = { preset = 'super-tab' },
+
+        appearance = {
+          nerd_font_variant = 'mono'
         },
-        disable_filetype = { "TelescopePrompt", "vim" },
-      })
-      
-    end
-  }
+
+        completion = {
+          documentation = { auto_show = true },
+          menu = { max_height = 5 }
+        },
+
+        sources = {
+          default = { 'lsp', 'path', 'snippets', 'buffer' },
+        },
+
+        fuzzy = { implementation = "prefer_rust_with_warning" }
+      },
+      opts_extend = { "sources.default" }
+    },
+    {
+      'windwp/nvim-autopairs',
+      event = "InsertEnter",
+      config = function()
+        require('nvim-autopairs').setup({
+          check_ts = true,
+          ts_config = {
+            lua = { 'string' },
+            javascript = { 'string', 'template_string' },
+          },
+          disable_filetype = { "TelescopePrompt", "vim" },
+        })
+      end
+    }
 }

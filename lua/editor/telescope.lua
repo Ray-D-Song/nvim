@@ -30,36 +30,36 @@ return {
         toggle_preview = '<Tab>',
       },
     })
-    
-    -- 自定义高亮颜色，让选择更明显
+
+    -- Custom hightlight color
     vim.api.nvim_set_hl(0, 'MiniPickMatchCurrent', { bg = '#3e4451', fg = '#61afef', bold = true })
     vim.api.nvim_set_hl(0, 'MiniPickMatchMarked', { bg = '#e06c75', fg = '#ffffff', bold = true })
     vim.api.nvim_set_hl(0, 'MiniPickBorderText', { fg = '#98c379' })
     vim.api.nvim_set_hl(0, 'MiniPickPrompt', { fg = '#e5c07b', bold = true })
-    
+
     -- 设置键位映射
-    vim.keymap.set('n', '<leader>ff', function() 
-      require('mini.pick').builtin.files() 
+    vim.keymap.set('n', '<leader>ff', function()
+      require('mini.pick').builtin.files()
     end, { desc = 'Find files' })
-    
-    vim.keymap.set('n', '<leader>fg', function() 
-      require('mini.pick').builtin.grep_live() 
+
+    vim.keymap.set('n', '<leader>fg', function()
+      require('mini.pick').builtin.grep_live()
     end, { desc = 'Live grep' })
-    
-    vim.keymap.set('n', '<D-S-f>', function() 
-      require('mini.pick').builtin.grep_live() 
+
+    vim.keymap.set('n', '<D-S-f>', function()
+      require('mini.pick').builtin.grep_live()
     end, { desc = 'Live grep' })
-    
-    vim.keymap.set('n', '<leader>fb', function() 
-      require('mini.pick').builtin.buffers() 
+
+    vim.keymap.set('n', '<leader>fb', function()
+      require('mini.pick').builtin.buffers()
     end, { desc = 'Find buffers' })
-    
-    vim.keymap.set('n', '<leader>fh', function() 
-      require('mini.pick').builtin.help() 
+
+    vim.keymap.set('n', '<leader>fh', function()
+      require('mini.pick').builtin.help()
     end, { desc = 'Help tags' })
-    
-    vim.keymap.set('n', '<space>f', function() 
-      require('mini.pick').builtin.files() 
+
+    vim.keymap.set('n', '<space>f', function()
+      require('mini.pick').builtin.files()
     end, { desc = 'Find files' })
   end
 }
