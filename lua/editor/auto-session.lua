@@ -15,7 +15,7 @@ return {
     auto_restore_lazy_delay_enabled = true,
     suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
     cwd_change_handling = {
-      restore_upcoming_session = false,
+      restore_upcoming_session = true,
     },
     -- log_level = 'debug',
     session_lens = {

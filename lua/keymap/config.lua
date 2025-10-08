@@ -7,10 +7,44 @@ vim.keymap.set({ 'n', 'v' }, '<D-/>', 'gcc', { remap = true })       -- Toggle c
 vim.keymap.set('n', 'ca', 'ggVG', { noremap = true, silent = true }) -- Select all content
 -- Format code
 vim.keymap.set('n', 'fmt', function()
-  vim.lsp.buf.format { async = true }
+  if vim.bo.filetype == 'go' then
+    -- Organize imports first
+    local params = vim.lsp.util.make_range_params()
+    params.context = { only = { "source.organizeImports" } }
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
+    for _, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          vim.lsp.util.apply_workspace_edit(r.edit, "utf-8")
+        else
+          vim.lsp.buf.execute_command(r.command)
+        end
+      end
+    end
+  end
+  vim.lsp.buf.format { async = false }
 end, opts)
 
-vim.keymap.set('n', 'sa', ':w<CR>')                             -- Save file
+vim.keymap.set('n', 'sa', function()
+  if vim.bo.filetype == 'go' then
+    -- Organize imports first
+    local params = vim.lsp.util.make_range_params()
+    params.context = { only = { "source.organizeImports" } }
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
+    for _, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          vim.lsp.util.apply_workspace_edit(r.edit, "utf-8")
+        else
+          vim.lsp.buf.execute_command(r.command)
+        end
+      end
+    end
+    -- Then format
+    vim.lsp.buf.format { async = false }
+  end
+  vim.cmd('w')
+end)                             -- Save file
 vim.keymap.set('n', 'wq', ':wq<CR>')                            -- Save and close file
 vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>') -- Show LSP quick fix suggestions
 vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')  -- Go to definition
