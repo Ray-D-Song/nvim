@@ -82,7 +82,6 @@ return {
             'cmake',
             'intelephense',
             'phpactor',
-            'psalm',
             'gopls'
           },
           handlers = {

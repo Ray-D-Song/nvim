@@ -128,7 +128,9 @@ vim.keymap.set('n', 'sd', function()
 
     -- Add keymaps to close the window
     local close_win = function()
-      vim.api.nvim_win_close(win, true)
+      if vim.api.nvim_win_is_valid(win) then
+        vim.api.nvim_win_close(win, true)
+      end
     end
 
     vim.keymap.set('n', 'q', close_win, { buffer = buf, nowait = true })
