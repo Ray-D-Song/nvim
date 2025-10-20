@@ -44,7 +44,7 @@ vim.keymap.set('n', 'sa', function()
     vim.lsp.buf.format { async = false }
   end
   vim.cmd('w')
-end)                             -- Save file
+end)                                                            -- Save file
 vim.keymap.set('n', 'wq', ':wq<CR>')                            -- Save and close file
 vim.keymap.set('n', 'qf', ':lua vim.lsp.buf.code_action()<CR>') -- Show LSP quick fix suggestions
 vim.keymap.set('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')  -- Go to definition
@@ -203,6 +203,7 @@ vim.keymap.set('n', 'wj', '<C-w>j') -- Switch to bottom window
 vim.keymap.set('n', 'th', ':BufferPrevious<CR>') -- Switch to previous buffer
 vim.keymap.set('n', 'tl', ':BufferNext<CR>')     -- Switch to next buffer
 vim.keymap.set('n', 'tx', ':BufferClose<CR>')    -- Close current buffer
+vim.keymap.set('n', 'gb', '<C-^>', { noremap = true, silent = true })
 
 -- Movement related keymap configuration
 vim.keymap.set('n', '<space>k', '10k') -- Move up 10 lines
@@ -262,11 +263,11 @@ end, { desc = 'Copy diagnostic to clipboard' })
 
 -- Diagnostic configuration
 vim.diagnostic.config({
-  virtual_text = true,  -- 显示行尾的错误/警告文本
-  signs = true,         -- 显示行号旁的图标
-  underline = true,     -- 在错误处显示下划线
-  update_in_insert = false,  -- 插入模式下不更新诊断
-  severity_sort = true,      -- 按严重程度排序
+  virtual_text = true,      -- 显示行尾的错误/警告文本
+  signs = true,             -- 显示行号旁的图标
+  underline = true,         -- 在错误处显示下划线
+  update_in_insert = false, -- 插入模式下不更新诊断
+  severity_sort = true,     -- 按严重程度排序
   float = {
     border = 'rounded',
     source = 'always',

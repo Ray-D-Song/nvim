@@ -1,5 +1,6 @@
-return function(lspconfig, capabilities, on_attach)
-  lspconfig.gopls.setup({
+return function(capabilities, on_attach)
+  vim.lsp.enable('gopls')
+  vim.lsp.config('gopls', {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
       -- 1. ensure keymap

@@ -17,6 +17,13 @@ vim.opt.rtp:prepend(lazy_path)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+vim.opt.autoread = true
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  pattern = "*",
+  command = "if mode() != 'c' | checktime | endif",
+})
+
 require("lazy").setup({
   spec = {
     {
