@@ -2,28 +2,28 @@ local gopls_config_fn = require('lsp.go.config')
 local vue_config_fn = require('lsp.vue.config')
 
 return {
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter.configs').setup({
-        ensure_installed = {
-          'lua', 'vim', 'vimdoc', 'query',
-          'javascript', 'typescript', 'tsx', 'json',
-          'html', 'css', 'python', 'rust', 'c', 'cpp',
-          'php', 'vue', 'markdown', 'go', 'java'
-        },
-        sync_install = false,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
-        indent = {
-          enable = true
-        },
-      })
-    end,
-  },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter',
+  --   build = ':TSUpdate',
+  --   config = function()
+  --     require('nvim-treesitter.configs').setup({
+  --       ensure_installed = {
+  --         'lua', 'vim', 'vimdoc', 'query',
+  --         'javascript', 'typescript', 'tsx', 'json',
+  --         'html', 'css', 'python', 'rust', 'c', 'cpp',
+  --         'php', 'vue', 'markdown', 'go', 'java'
+  --       },
+  --       sync_install = false,
+  --       highlight = {
+  --         enable = true,
+  --         additional_vim_regex_highlighting = false,
+  --       },
+  --       indent = {
+  --         enable = true
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     'numToStr/Comment.nvim',
   },
