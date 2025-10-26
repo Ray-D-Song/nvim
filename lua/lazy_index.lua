@@ -60,18 +60,34 @@ require("lazy").setup({
             update_root = false,
           },
           view = {
+            width = 40,
             preserve_window_proportions = true,
           },
         }
       end,
     },
-    -- Theme
+    -- {
+    --   "ray-d-song/calm.nvim",
+    --   lazy = false,
+    --   priority = 1000,
+    --   config = function()
+    --     vim.opt.termguicolors = true
+    --
+    --     vim.opt.background = "dark"
+    --     vim.cmd.colorscheme("calm")
+    --   end,
+    -- },
     {
       'Mofiqul/vscode.nvim',
       lazy = false,
       priority = 1000,
       config = function()
+        local c = require('vscode.colors').get_colors()
         require('vscode').setup {
+          transparent = false,
+          italic_comments = true,
+          group_overrides = {
+          }
         }
         require('vscode').load()
       end,
