@@ -2,8 +2,6 @@
 vim.keymap.set('i', 'jj', '<Esc>') -- Use jj to exit insert mode
 
 
--- Command mode keymap configuration
-vim.keymap.set({ 'n', 'v' }, '<D-/>', 'gcc', { remap = true })       -- Toggle comment
 vim.keymap.set('n', 'ca', 'ggVG', { noremap = true, silent = true }) -- Select all content
 -- Format code
 vim.keymap.set('n', 'fmt', function()

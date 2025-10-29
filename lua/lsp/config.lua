@@ -51,12 +51,12 @@ return {
       })
     end,
   },
-  {
-    'nvim-java/nvim-java',
-    config = function ()
-      require('java').setup()
-    end
-  },
+--  {
+--    'nvim-java/nvim-java',
+--    config = function ()
+--      require('java').setup()
+--    end
+--  },
   {
     'williamboman/mason-lspconfig.nvim',
     dependencies = {
@@ -90,16 +90,16 @@ return {
       -- Setup mason-lspconfig to ensure LSP servers are installed
       require('mason-lspconfig').setup({
         ensure_installed = {
-          'lua_ls', 'clangd', 'cmake', 'pyright', 'rust_analyzer',
-          'eslint', 'ts_ls', 'intelephense', 'phpactor',
-          'psalm', 'gopls'
+          'lua_ls', 'clangd', 'pyright', 'rust_analyzer',
+          'eslint', 'ts_ls', 'intelephense',
+          'gopls'
         },
       })
 
       -- Configure LSP servers using vim.lsp.config (new API)
       local servers = {
-        'lua_ls', 'clangd', 'cmake', 'pyright', 'rust_analyzer',
-        'eslint', 'intelephense', 'phpactor', 'psalm', 'tailwindcss-language-server'
+        'lua_ls', 'clangd', 'pyright', 'rust_analyzer',
+        'eslint', 'intelephense', 'tailwindcss-language-server'
       }
 
       for _, server in ipairs(servers) do

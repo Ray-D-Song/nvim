@@ -21,11 +21,7 @@ return {
     local fzf = require('fzf-lua')
 
     -- 设置键位映射
-    vim.keymap.set('n', '<leader>ff', fzf.files, { desc = 'Find files' })
-    vim.keymap.set('n', '<leader>fg', fzf.live_grep, { desc = 'Live grep' })
-    vim.keymap.set('n', '<D-S-f>', fzf.live_grep, { desc = 'Live grep' })
-    vim.keymap.set('n', '<leader>fb', fzf.buffers, { desc = 'Find buffers' })
-    vim.keymap.set('n', '<leader>fh', fzf.help_tags, { desc = 'Help tags' })
-    vim.keymap.set('n', '<space>f', fzf.files, { desc = 'Find files' })
+    vim.keymap.set('n', '<leader><leader>f', fzf.live_grep, { desc = 'Live grep' })
+    vim.keymap.set('n', '<leader>f', fzf.files, { desc = 'Find files' })
   end
 }
