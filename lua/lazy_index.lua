@@ -66,32 +66,32 @@ require("lazy").setup({
         }
       end,
     },
-    -- {
-    --   "ray-d-song/calm.nvim",
-    --   lazy = false,
-    --   priority = 1000,
-    --   config = function()
-    --     vim.opt.termguicolors = true
-    --
-    --     vim.opt.background = "dark"
-    --     vim.cmd.colorscheme("calm")
-    --   end,
-    -- },
     {
-      'Mofiqul/vscode.nvim',
+      "ray-d-song/calm.nvim",
       lazy = false,
       priority = 1000,
       config = function()
-        local c = require('vscode.colors').get_colors()
-        require('vscode').setup {
-          transparent = false,
-          italic_comments = true,
-          group_overrides = {
-          }
-        }
-        require('vscode').load()
+        require("calm").setup({
+        })
+
+        vim.cmd.colorscheme("calm")
       end,
     },
+    -- {
+    --   'Mofiqul/vscode.nvim',
+    --   lazy = false,
+    --   priority = 1000,
+    --   config = function()
+    --     local c = require('vscode.colors').get_colors()
+    --     require('vscode').setup {
+    --       transparent = false,
+    --       italic_comments = true,
+    --       group_overrides = {
+    --       }
+    --     }
+    --     require('vscode').load()
+    --   end,
+    -- },
     {
       'smoka7/hop.nvim',
       version = "*",
