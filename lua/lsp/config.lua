@@ -11,7 +11,8 @@ return {
           'lua', 'vim', 'vimdoc', 'query',
           'javascript', 'typescript', 'tsx', 'json',
           'html', 'css', 'python', 'rust', 'c', 'cpp',
-          'php', 'vue', 'markdown', 'go', 'java'
+          'php', 'vue', 'markdown', 'go', 'java',
+          'zig'
         },
         sync_install = false,
         -- Use prebuilt binaries when available
