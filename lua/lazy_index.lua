@@ -33,7 +33,7 @@ require("lazy").setup({
       import = 'lsp.config',
     },
     {
-      import = 'editor.telescope'
+      import = 'editor.fzf'
     },
     {
       import = 'editor.auto-session'
