@@ -1,1 +1,1 @@
-This directory contains the configuration for the JavaScript/TypeScript/Vue language server.
+This directory contains the configuration for the JavaScript/TypeScript language server.

@@ -1,5 +1,4 @@
 local gopls_config_fn = require('lsp.go.config')
-local vue_config_fn = require('lsp.vue.config')
 
 return {
   -- {
@@ -96,10 +95,31 @@ return {
         },
       })
 
+      -- Configure TypeScript LSP for JSX/TSX
+      vim.lsp.config('ts_ls', {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+        settings = {
+          typescript = {
+            preferences = {
+              includeCompletionsForModuleExports = true,
+              includeCompletionsWithInsertText = true,
+            },
+          },
+          javascript = {
+            preferences = {
+              includeCompletionsForModuleExports = true,
+              includeCompletionsWithInsertText = true,
+            },
+          },
+        },
+      })
+
       -- Configure LSP servers using vim.lsp.config (new API)
       local servers = {
         'lua_ls', 'clangd', 'pyright', 'rust_analyzer',
-        'eslint', 'intelephense', 'tailwindcss-language-server'
+        'eslint', 'intelephense', 'tailwindcss-language-server', 'ts_ls'
       }
 
       for _, server in ipairs(servers) do
@@ -109,9 +129,6 @@ return {
           on_attach = on_attach,
         })
       end
-
-      -- Vue with custom configuration (this also configures ts_ls)
-      vue_config_fn(capabilities, on_attach)
 
       -- Go with custom configuration
       gopls_config_fn(capabilities, on_attach)
