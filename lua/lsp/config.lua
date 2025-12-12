@@ -32,6 +32,9 @@ vim.api.nvim_create_autocmd('WinEnter', {
 
 return {
   {
+    'neovim/nvim-lspconfig'
+  },
+  {
     'numToStr/Comment.nvim',
   },
   {
@@ -91,27 +94,6 @@ return {
           'lua_ls', 'clangd', 'pyright', 'rust_analyzer',
           'eslint', 'ts_ls', 'intelephense',
           'gopls'
-        },
-      })
-
-      -- Configure TypeScript LSP for JSX/TSX
-      vim.lsp.config('ts_ls', {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-        settings = {
-          typescript = {
-            preferences = {
-              includeCompletionsForModuleExports = true,
-              includeCompletionsWithInsertText = true,
-            },
-          },
-          javascript = {
-            preferences = {
-              includeCompletionsForModuleExports = true,
-              includeCompletionsWithInsertText = true,
-            },
-          },
         },
       })
 
