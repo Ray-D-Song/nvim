@@ -4,11 +4,13 @@ return function(capabilities, on_attach)
     settings = {
       typescript = {
         inlayHints = {
-          includeInlayParameterNameHints = "literals",
+          includeInlayParameterNameHints = "all",
           includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-          includeInlayVariableTypeHints = false,
-          includeInlayFunctionLikeReturnTypeHints = false,
-          includeInlayPropertyDeclarationTypeHints = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
         },
       },
       javascript = {
