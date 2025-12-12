@@ -1,6 +1,104 @@
 local gopls_config_fn = require('lsp.go')
 local jsts_config_fn = require('lsp.js-ts')
 
+-- Customize inlay hint display for TypeScript
+local function setup_inlay_hint_customization()
+  local methods = vim.lsp.protocol.Methods
+
+  -- 可配置参数
+  local MAX_LABEL_LEN = 30
+  local ELLIPSIS = "…"
+  local TARGET_CLIENTS = {
+    ["typescript-tools"] = true,
+    ["tsserver"] = true,
+    ["ts_ls"] = true,  -- 添加 ts_ls 支持
+  }
+
+  -- 保留原 handler
+  local original_handler = vim.lsp.handlers[methods.textDocument_inlayHint]
+
+  -- 工具：截断字符串
+  local function truncate(str, max_len)
+    if #str <= max_len then
+      return str
+    end
+    return str:sub(1, max_len - #ELLIPSIS) .. ELLIPSIS
+  end
+
+  -- 工具：处理 label（string | InlayHintLabelPart[]）
+  local function normalize_label(label)
+    if type(label) == "string" then
+      return truncate(label, MAX_LABEL_LEN)
+    end
+
+    -- labelParts: { { value = "...", tooltip = ... }, ... }
+    if type(label) == "table" then
+      local buf = {}
+      local total = 0
+
+      for _, part in ipairs(label) do
+        if type(part.value) ~= "string" then
+          goto continue
+        end
+
+        local remain = MAX_LABEL_LEN - total
+        if remain <= 0 then
+          break
+        end
+
+        local value = part.value
+        if #value > remain then
+          value = truncate(value, remain)
+          table.insert(buf, {
+            value = value,
+            tooltip = part.tooltip,
+          })
+          break
+        end
+
+        total = total + #value
+        table.insert(buf, part)
+
+        ::continue::
+      end
+
+      -- 超出时追加省略号
+      if total >= MAX_LABEL_LEN then
+        table.insert(buf, { value = ELLIPSIS })
+      end
+
+      return buf
+    end
+
+    return label
+  end
+
+  -- 覆盖 handler
+  vim.lsp.handlers[methods.textDocument_inlayHint] = function(err, result, ctx, config)
+    if err or type(result) ~= "table" then
+      return original_handler(err, result, ctx, config)
+    end
+
+    local client = vim.lsp.get_client_by_id(ctx.client_id)
+    if not client or not TARGET_CLIENTS[client.name] then
+      return original_handler(err, result, ctx, config)
+    end
+
+    -- 映射为 table，避免 iterator 兼容问题
+    local new_result = vim.tbl_map(function(hint)
+      if hint.label ~= nil then
+        hint.label = normalize_label(hint.label)
+      end
+      return hint
+    end, result)
+
+    return original_handler(err, new_result, ctx, config)
+  end
+end
+
+-- 立即设置 inlay hint 自定义
+setup_inlay_hint_customization()
+
 -- Track if we were in a quickfix window
 local was_in_qf = false
 
