@@ -1,6 +1,35 @@
 local gopls_config_fn = require('lsp.go')
 local jsts_config_fn = require('lsp.js-ts')
 
+-- Track if we were in a quickfix window
+local was_in_qf = false
+
+-- Auto-close quickfix/location list when jumping from it to a normal buffer
+vim.api.nvim_create_autocmd('WinLeave', {
+  callback = function()
+    local current_buf = vim.api.nvim_get_current_buf()
+    local buftype = vim.api.nvim_buf_get_option(current_buf, 'buftype')
+    was_in_qf = (buftype == 'quickfix')
+  end
+})
+
+vim.api.nvim_create_autocmd('WinEnter', {
+  callback = function()
+    if was_in_qf then
+      local current_buf = vim.api.nvim_get_current_buf()
+      local buftype = vim.api.nvim_buf_get_option(current_buf, 'buftype')
+      -- If we just left a quickfix window and entered a normal buffer, close quickfix
+      if buftype == '' then
+        vim.defer_fn(function()
+          vim.cmd('cclose')
+          vim.cmd('lclose')
+        end, 50)
+      end
+      was_in_qf = false
+    end
+  end
+})
+
 return {
   {
     'numToStr/Comment.nvim',

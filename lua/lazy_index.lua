@@ -19,12 +19,6 @@ vim.g.maplocalleader = "\\"
 
 vim.opt.autoread = false
 
--- Disabled auto-reloading configuration files
--- vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
---   pattern = "*",
---   command = "if mode() != 'c' | checktime | endif",
--- })
-
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -71,9 +65,97 @@ require("lazy").setup({
           },
           view = {
             width = 40,
+            side = "left",
             preserve_window_proportions = true,
           },
+          actions = {
+            open_file = {
+              quit_on_open = false,
+            },
+          },
+          on_attach = function(bufnr)
+            local api = require("nvim-tree.api")
+
+            -- Use default mappings
+            api.config.mappings.default_on_attach(bufnr)
+
+            -- Disable quit/close keymaps (only if they exist)
+            pcall(vim.keymap.del, 'n', 'q', { buffer = bufnr })
+
+            -- Override q to do nothing instead of closing
+            vim.keymap.set('n', 'q', '<nop>', { buffer = bufnr, noremap = true, silent = true })
+          end,
         }
+
+        -- Auto-open nvim-tree on startup
+        vim.api.nvim_create_autocmd("VimEnter", {
+          callback = function()
+            vim.defer_fn(function()
+              local api = require("nvim-tree.api")
+              if not api.tree.is_visible() then
+                api.tree.open()
+              end
+            end, 100)
+          end,
+        })
+
+        -- Prevent closing nvim-tree (with debounce to avoid rapid triggers)
+        local reopening = false
+        vim.api.nvim_create_autocmd("BufEnter", {
+          callback = function()
+            if reopening then return end
+
+            vim.defer_fn(function()
+              local api = require("nvim-tree.api")
+              -- Check if nvim-tree exists but is not visible
+              if not api.tree.is_visible() then
+                local buffers = vim.api.nvim_list_bufs()
+                local has_nvim_tree_buf = false
+
+                for _, buf in ipairs(buffers) do
+                  if vim.api.nvim_buf_is_valid(buf) then
+                    local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+                    if ft == 'NvimTree' then
+                      has_nvim_tree_buf = true
+                      break
+                    end
+                  end
+                end
+
+                -- Only try to open if there's no existing nvim-tree buffer
+                if not has_nvim_tree_buf then
+                  reopening = true
+                  api.tree.open()
+                  vim.defer_fn(function()
+                    reopening = false
+                  end, 200)
+                end
+              end
+            end, 50)
+          end,
+        })
+
+        -- Override quit commands to prevent closing when only nvim-tree is left
+        vim.api.nvim_create_autocmd("QuitPre", {
+          callback = function()
+            local tree_wins = {}
+            local wins = vim.api.nvim_list_wins()
+
+            -- Find all nvim-tree windows
+            for _, win in ipairs(wins) do
+              local buf = vim.api.nvim_win_get_buf(win)
+              local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+              if ft == "NvimTree" then
+                table.insert(tree_wins, win)
+              end
+            end
+
+            -- If trying to close the last non-nvim-tree window, prevent quit
+            if #wins - #tree_wins <= 1 then
+              vim.cmd("qa!")
+            end
+          end,
+        })
       end,
     },
     {

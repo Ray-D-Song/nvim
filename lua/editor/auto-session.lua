@@ -20,11 +20,14 @@ return {
     },
     post_restore_cmds = {
       function()
-        local nvim_tree_api = require('nvim-tree.api')
-        if nvim_tree_api.tree.is_visible() then
-          nvim_tree_api.tree.toggle()
-        end
-        nvim_tree_api.tree.toggle()
+        -- nvim-tree will auto-open via the BufEnter autocmd in lazy_index.lua
+        -- Ensure it's visible after session restore
+        vim.defer_fn(function()
+          local nvim_tree_api = require('nvim-tree.api')
+          if not nvim_tree_api.tree.is_visible() then
+            nvim_tree_api.tree.open()
+          end
+        end, 100)
       end
     },
   },

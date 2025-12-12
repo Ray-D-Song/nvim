@@ -356,11 +356,11 @@ end, { desc = 'Copy diagnostic to clipboard' })
 
 -- Diagnostic configuration
 vim.diagnostic.config({
-  virtual_text = true,      -- 显示行尾的错误/警告文本
-  signs = true,             -- 显示行号旁的图标
-  underline = true,         -- 在错误处显示下划线
-  update_in_insert = false, -- 插入模式下不更新诊断
-  severity_sort = true,     -- 按严重程度排序
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
   float = {
     border = 'rounded',
     source = 'always',
