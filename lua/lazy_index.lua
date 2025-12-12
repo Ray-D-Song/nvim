@@ -17,17 +17,27 @@ vim.opt.rtp:prepend(lazy_path)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
-vim.opt.autoread = true
+vim.opt.autoread = false
 
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
-  pattern = "*",
-  command = "if mode() != 'c' | checktime | endif",
+-- Disabled auto-reloading configuration files
+-- vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+--   pattern = "*",
+--   command = "if mode() != 'c' | checktime | endif",
+-- })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.supports_method("textDocument/inlayHint") then
+      vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+    end
+  end,
 })
 
 require("lazy").setup({
   spec = {
     {
-      import = 'style.config',
+      import = 'style',
     },
     {
       import = 'lsp.config',
@@ -77,21 +87,6 @@ require("lazy").setup({
         vim.cmd.colorscheme("calm")
       end,
     },
-    -- {
-    --   'Mofiqul/vscode.nvim',
-    --   lazy = false,
-    --   priority = 1000,
-    --   config = function()
-    --     local c = require('vscode.colors').get_colors()
-    --     require('vscode').setup {
-    --       transparent = false,
-    --       italic_comments = true,
-    --       group_overrides = {
-    --       }
-    --     }
-    --     require('vscode').load()
-    --   end,
-    -- },
     {
       'smoka7/hop.nvim',
       version = "*",

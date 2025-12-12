@@ -3,6 +3,99 @@ vim.keymap.set('i', 'jj', '<Esc>') -- Use jj to exit insert mode
 
 
 vim.keymap.set('n', 'ca', 'ggVG', { noremap = true, silent = true }) -- Select all content
+
+local js_like_filetypes = {
+  javascript = true,
+  javascriptreact = true,
+  typescript = true,
+  typescriptreact = true,
+  vue = true,
+}
+
+local function format_with_preference()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local filetype = vim.bo[bufnr].filetype
+
+  local function format_with_client(name)
+    vim.lsp.buf.format({
+      async = false,
+      bufnr = bufnr,
+      filter = function(client)
+        return client.name == name
+      end,
+    })
+  end
+
+  if js_like_filetypes[filetype] then
+    if #vim.lsp.get_clients({ bufnr = bufnr, name = 'eslint' }) > 0 then
+      return format_with_client('eslint')
+    end
+
+    if #vim.lsp.get_clients({ bufnr = bufnr, name = 'ts_ls' }) > 0 then
+      return format_with_client('ts_ls')
+    end
+  end
+
+  vim.lsp.buf.format({ async = false, bufnr = bufnr })
+end
+
+local function is_nvim_tree_buffer(bufnr)
+  if not bufnr or bufnr == 0 or not vim.api.nvim_buf_is_valid(bufnr) then
+    return false
+  end
+  return vim.bo[bufnr].filetype == 'NvimTree'
+end
+
+local function keep_only_current_buffer()
+  pcall(vim.cmd, 'tabonly')
+
+  local current_win = vim.api.nvim_get_current_win()
+  local current_buf = vim.api.nvim_win_get_buf(current_win)
+  local wins = vim.api.nvim_tabpage_list_wins(0)
+
+  local function focus_code_window()
+    if not is_nvim_tree_buffer(current_buf) then
+      return true
+    end
+    for _, win in ipairs(wins) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      if not is_nvim_tree_buffer(buf) then
+        vim.api.nvim_set_current_win(win)
+        current_win = win
+        current_buf = buf
+        return true
+      end
+    end
+    return false
+  end
+
+  if not focus_code_window() then
+    return
+  end
+
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if win ~= current_win then
+      local buf = vim.api.nvim_win_get_buf(win)
+      if not is_nvim_tree_buffer(buf) then
+        pcall(vim.api.nvim_win_close, win, false)
+      end
+    end
+  end
+
+  if vim.fn.exists(':BufferCloseAllButCurrent') == 2 then
+    pcall(vim.cmd, 'BufferCloseAllButCurrent')
+  else
+    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+      if bufnr ~= current_buf
+        and vim.api.nvim_buf_is_loaded(bufnr)
+        and vim.bo[bufnr].buflisted
+        and not is_nvim_tree_buffer(bufnr) then
+        pcall(vim.api.nvim_buf_delete, bufnr, {})
+      end
+    end
+  end
+end
+
 -- Format code
 vim.keymap.set('n', 'fmt', function()
   if vim.bo.filetype == 'go' then
@@ -20,7 +113,7 @@ vim.keymap.set('n', 'fmt', function()
       end
     end
   end
-  vim.lsp.buf.format { async = false }
+  format_with_preference()
 end, opts)
 
 vim.keymap.set('n', 'sa', function()
@@ -39,7 +132,7 @@ vim.keymap.set('n', 'sa', function()
       end
     end
     -- Then format
-    vim.lsp.buf.format { async = false }
+    format_with_preference()
   end
   vim.cmd('w')
 end)                                                            -- Save file
@@ -190,6 +283,7 @@ vim.keymap.set('n', 'x', ':q<CR>')                                              
 vim.keymap.set('n', 'wx', ':split<CR>')  -- Split screen horizontally
 vim.keymap.set('n', 'wy', ':vsplit<CR>') -- Split screen vertically
 vim.keymap.set('n', 'wc', ':close<CR>')  -- Close current split screen
+vim.keymap.set('n', 'to', keep_only_current_buffer, { desc = 'Keep current buffer + NvimTree' })
 
 -- Window switching keymap
 vim.keymap.set('n', 'wh', '<C-w>h') -- Switch to left window

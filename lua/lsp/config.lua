@@ -1,31 +1,7 @@
-local gopls_config_fn = require('lsp.go.config')
+local gopls_config_fn = require('lsp.go')
+local jsts_config_fn = require('lsp.js-ts')
 
 return {
-  -- {
-  --   'nvim-treesitter/nvim-treesitter',
-  --   build = ':TSUpdate',
-  --   config = function()
-  --     require('nvim-treesitter.configs').setup({
-  --       ensure_installed = {
-  --         'lua', 'vim', 'vimdoc', 'query',
-  --         'javascript', 'typescript', 'tsx', 'json',
-  --         'html', 'css', 'python', 'rust', 'c', 'cpp',
-  --         'php', 'vue', 'markdown', 'go', 'java'
-  --       },
-  --       sync_install = false,
-  --       -- Use prebuilt binaries when available
-  --       prefer_git = false,
-  --       auto_install = true,
-  --       highlight = {
-  --         enable = true,
-  --         additional_vim_regex_highlighting = false,
-  --       },
-  --       indent = {
-  --         enable = true
-  --       },
-  --     })
-  --   end,
-  -- },
   {
     'numToStr/Comment.nvim',
   },
@@ -50,12 +26,6 @@ return {
       })
     end,
   },
---  {
---    'nvim-java/nvim-java',
---    config = function ()
---      require('java').setup()
---    end
---  },
   {
     'williamboman/mason-lspconfig.nvim',
     dependencies = {
@@ -132,6 +102,7 @@ return {
 
       -- Go with custom configuration
       gopls_config_fn(capabilities, on_attach)
+      jsts_config_fn(capabilities, on_attach)
     end,
   },
   {

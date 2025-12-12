@@ -1,1 +1,0 @@
-This directory contains the configuration for the JavaScript/TypeScript language server.

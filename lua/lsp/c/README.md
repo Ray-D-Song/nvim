@@ -1,1 +1,0 @@
-This directory contains the configuration for the C/C++/Makefile/CMake language server.
