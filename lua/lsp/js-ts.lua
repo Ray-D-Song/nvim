@@ -22,7 +22,8 @@ return function(capabilities, on_attach)
     },
   })
 
-  local vue_language_server_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server'
+  local vue_language_server_path = vim.fn.expand '$MASON/packages' ..
+  '/vue-language-server' .. '/node_modules/@vue/language-server'
   local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
   local vue_plugin = {
     name = '@vue/typescript-plugin',
@@ -52,8 +53,6 @@ return function(capabilities, on_attach)
     filetypes = tsserver_filetypes,
   }
 
-  -- If you are on most recent `nvim-lspconfig`
-  local vue_ls_config = {}
   -- If you are not on most recent `nvim-lspconfig` or you want to override
   local vue_ls_config = {
     on_init = function(client)

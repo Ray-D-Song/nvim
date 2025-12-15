@@ -26,6 +26,20 @@ local function format_with_preference()
     })
   end
 
+  if filetype == 'sql' then
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local content = table.concat(lines, '\n')
+    local cmd = 'sql-formatter'
+    local result = vim.fn.system(cmd, content)
+    if vim.v.shell_error == 0 then
+      local new_lines = vim.split(result, '\n', { plain = true })
+      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
+    else
+      vim.notify('sql-formatter failed: ' .. result, vim.log.levels.ERROR)
+    end
+    return
+  end
+
   if js_like_filetypes[filetype] then
     if #vim.lsp.get_clients({ bufnr = bufnr, name = 'eslint' }) > 0 then
       return format_with_client('eslint')

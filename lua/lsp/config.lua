@@ -1,5 +1,6 @@
 local gopls_config_fn = require('lsp.go')
 local jsts_config_fn = require('lsp.js-ts')
+local sql_config_fn = require('lsp.sql')
 
 -- Track if we were in a quickfix window
 local was_in_qf = false
@@ -114,6 +115,7 @@ return {
       -- Go with custom configuration
       gopls_config_fn(capabilities, on_attach)
       jsts_config_fn(capabilities, on_attach)
+      sql_config_fn(capabilities, on_attach)
     end,
   },
   {
