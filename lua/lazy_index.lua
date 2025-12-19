@@ -48,20 +48,26 @@ require("lazy").setup({
       init = function()
       end
     },
-    -- {
-    --   "ray-d-song/inlay-hint-trim.nvim",
-    --   config = function()
-    --     require("inlay-hint-trim").setup({
-    --       max_length = 30,
-    --       ellipsis = "…",
-    --       clients = {
-    --         ["typescript-tools"] = true,
-    --         ["tsserver"] = true,
-    --         ["ts_ls"] = true,
-    --       },
-    --     })
-    --   end,
-    -- },
+    {
+      "ray-d-song/inlay-hint-trim.nvim",
+      config = function()
+        require("inlay-hint-trim").setup({
+          max_length = 24,
+          ellipsis = "…",
+          clients = {
+            ["typescript-tools"] = true,
+            ["tsserver"] = true,
+            ["ts_ls"] = true,
+          },
+        })
+      end,
+    },
+    {
+      "norcalli/nvim-colorizer.lua",
+      config = function()
+        require('colorizer').setup()
+      end
+    },
     {
       "nvim-tree/nvim-tree.lua",
       version = "*",
@@ -195,4 +201,3 @@ require("lazy").setup({
 })
 
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-

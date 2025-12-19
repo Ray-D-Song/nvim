@@ -397,3 +397,18 @@ vim.api.nvim_create_autocmd("CursorHold", {
     vim.diagnostic.open_float(nil, opts)
   end
 })
+
+-- Inlay hint toggle command
+vim.api.nvim_create_user_command('InlayHintToggle', function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local current_state = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+  vim.lsp.inlay_hint.enable(not current_state, { bufnr = bufnr })
+  if not current_state then
+    print('Inlay hints enabled')
+  else
+    print('Inlay hints disabled')
+  end
+end, { desc = 'Toggle inlay type hints' })
+
+-- Keymap for inlay hint toggle
+vim.keymap.set('n', '<leader>ih', ':InlayHintToggle<CR>', { desc = 'Toggle inlay hints' })
