@@ -40,9 +40,6 @@ require("lazy").setup({
       import = 'editor.fzf'
     },
     {
-      import = 'editor.auto-session'
-    },
-    {
       "mg979/vim-visual-multi",
       branch = "master",
       init = function()
