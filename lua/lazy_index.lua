@@ -19,15 +19,6 @@ vim.g.maplocalleader = "\\"
 
 vim.opt.autoread = false
 
--- vim.api.nvim_create_autocmd("LspAttach", {
---   callback = function(args)
---     local client = vim.lsp.get_client_by_id(args.data.client_id)
---     if client and client.supports_method("textDocument/inlayHint") then
---       vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
---     end
---   end,
--- })
-
 require("lazy").setup({
   spec = {
     {
@@ -181,7 +172,7 @@ require("lazy").setup({
       priority = 1000,
       config = function()
         require("calm").setup({
-          preset = "vscode-light"
+          preset = "vscode"
         })
 
         vim.cmd.colorscheme("calm")
@@ -198,4 +189,3 @@ require("lazy").setup({
   checker = { enabled = false },
 })
 
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
