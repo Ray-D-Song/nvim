@@ -1,7 +1,6 @@
 -- Insert mode
 vim.keymap.set('i', 'jj', '<Esc>') -- Use jj to exit insert mode
 
-
 vim.keymap.set('n', 'ca', 'ggVG', { noremap = true, silent = true }) -- Select all content
 
 local js_like_filetypes = {
@@ -51,63 +50,6 @@ local function format_with_preference()
   end
 
   vim.lsp.buf.format({ async = false, bufnr = bufnr })
-end
-
-local function is_nvim_tree_buffer(bufnr)
-  if not bufnr or bufnr == 0 or not vim.api.nvim_buf_is_valid(bufnr) then
-    return false
-  end
-  return vim.bo[bufnr].filetype == 'NvimTree'
-end
-
-local function keep_only_current_buffer()
-  pcall(vim.cmd, 'tabonly')
-
-  local current_win = vim.api.nvim_get_current_win()
-  local current_buf = vim.api.nvim_win_get_buf(current_win)
-  local wins = vim.api.nvim_tabpage_list_wins(0)
-
-  local function focus_code_window()
-    if not is_nvim_tree_buffer(current_buf) then
-      return true
-    end
-    for _, win in ipairs(wins) do
-      local buf = vim.api.nvim_win_get_buf(win)
-      if not is_nvim_tree_buffer(buf) then
-        vim.api.nvim_set_current_win(win)
-        current_win = win
-        current_buf = buf
-        return true
-      end
-    end
-    return false
-  end
-
-  if not focus_code_window() then
-    return
-  end
-
-  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    if win ~= current_win then
-      local buf = vim.api.nvim_win_get_buf(win)
-      if not is_nvim_tree_buffer(buf) then
-        pcall(vim.api.nvim_win_close, win, false)
-      end
-    end
-  end
-
-  if vim.fn.exists(':BufferCloseAllButCurrent') == 2 then
-    pcall(vim.cmd, 'BufferCloseAllButCurrent')
-  else
-    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-      if bufnr ~= current_buf
-        and vim.api.nvim_buf_is_loaded(bufnr)
-        and vim.bo[bufnr].buflisted
-        and not is_nvim_tree_buffer(bufnr) then
-        pcall(vim.api.nvim_buf_delete, bufnr, {})
-      end
-    end
-  end
 end
 
 -- Format code
@@ -287,17 +229,16 @@ vim.keymap.set('n', '<space>K', function()
     end
   end)
 end, { desc = 'Copy hover content to clipboard' })
-vim.keymap.set('n', 'gs', ':lua require("fzf-lua").live_grep()<CR>')              -- Use fzf-lua for global search
-vim.keymap.set('n', '<D-S-f>', ':lua require("fzf-lua").live_grep()<CR>')          -- Use Command+Shift+F for global search
-vim.keymap.set('n', 'cs', ':lua require("fzf-lua").lgrep_curbuf()<CR>')            -- Use fzf-lua to search in current file
-vim.keymap.set('n', '<space>f', ':lua require("fzf-lua").files()<CR>')             -- Use fzf-lua to find files by name
-vim.keymap.set('n', 'x', ':q<CR>')                                                  -- Close current file
+vim.keymap.set('n', 'gs', ':lua require("fzf-lua").live_grep()<CR>')      -- Use fzf-lua for global search
+vim.keymap.set('n', '<D-S-f>', ':lua require("fzf-lua").live_grep()<CR>') -- Use Command+Shift+F for global search
+vim.keymap.set('n', 'cs', ':lua require("fzf-lua").lgrep_curbuf()<CR>')   -- Use fzf-lua to search in current file
+vim.keymap.set('n', '<space>f', ':lua require("fzf-lua").files()<CR>')    -- Use fzf-lua to find files by name
+vim.keymap.set('n', 'x', ':q<CR>')                                        -- Close current file
 
 -- Split screen operation keymap
 vim.keymap.set('n', 'wx', ':split<CR>')  -- Split screen horizontally
 vim.keymap.set('n', 'wy', ':vsplit<CR>') -- Split screen vertically
 vim.keymap.set('n', 'wc', ':close<CR>')  -- Close current split screen
-vim.keymap.set('n', 'to', keep_only_current_buffer, { desc = 'Keep current buffer + NvimTree' })
 
 -- Window switching keymap
 vim.keymap.set('n', 'wh', '<C-w>h') -- Switch to left window
