@@ -172,7 +172,7 @@ require("lazy").setup({
       priority = 1000,
       config = function()
         require("calm").setup({
-          preset = "vscode-light"
+          preset = "sublime"
         })
 
         vim.cmd.colorscheme("calm")
